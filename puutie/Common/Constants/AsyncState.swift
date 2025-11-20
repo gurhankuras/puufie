@@ -19,6 +19,12 @@ enum AsyncState<T> {
     }
 }
 
+extension AsyncState {
+    var hasError: Bool {
+        errorMessage != nil
+    }
+}
+
 extension AsyncState: Equatable where T: Equatable {}
 
 extension AsyncState where T == Void {

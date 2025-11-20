@@ -1,12 +1,4 @@
-//
-//  CustomDialog.swift
-//  puutie
-//
-//  Created by Gurhan on 11/18/25.
-//
-
 import SwiftUI
-
 struct CustomDialog<ActionContent: View>: View {
     @Binding var isPresented: Bool
     let title: String
@@ -43,36 +35,43 @@ struct CustomDialog<ActionContent: View>: View {
 
     var body: some View {
         GeometryReader { geo in
-            ZStack {
-                Color.clear
-                    .ignoresSafeArea()
-                VStack(spacing: 0) {
-                    header
-                    content
+            VStack {
+                Spacer()
 
-                    if let actions {
-                        Divider()
-                            .background(Color.white.opacity(0.3))
-                        HStack {
-                            actions()
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                    }
+                dialogCard
+                    .frame(width: geo.size.width * 0.85)
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private var dialogCard: some View {
+        VStack(spacing: 0) {
+            header
+            content
+
+            if let actions {
+                Divider()
+                    .background(Color.white.opacity(0.3))
+                HStack {
+                    actions()
                 }
-                .frame(width: geo.size.width * 0.85)
-                .background(Color.darkAccent2)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .shadow(color: .darkAccent2, radius: 4)
-                .overlay(alignment: .topLeading) {
-                    if dismissible {
-                        closeButton
-                    }
-                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+            }
+        }
+        .background(Color.darkAccent2)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .shadow(color: .black.opacity(0.4), radius: 12, y: 4)
+        .overlay(alignment: .topLeading) {
+            if dismissible {
+                closeButton
             }
         }
     }
-    
+
     private var header: some View {
         HStack(spacing: 5) {
             Spacer()
@@ -117,18 +116,3 @@ struct CustomDialog<ActionContent: View>: View {
         }
     }
 }
-
-struct CustomDialog_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color.black.opacity(0.5).ignoresSafeArea()
-            CustomDialog(
-                isPresented: .constant(true),
-                message: "Something went wrong!"
-            )
-        }
-    }
-}
-
-// #Preview(traits: .sizeThatFitsLayout) {}
-

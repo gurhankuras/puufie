@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		596CAA2C2ECFA5B400AB8FAD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 596CAA2B2ECFA5B400AB8FAD /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		593500F82ECCB5BD0035894C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -28,6 +32,7 @@
 		593500F72ECCB5BD0035894C /* puutieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = puutieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		593501012ECCB5BD0035894C /* puutieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = puutieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5935013F2ECDBCE50035894C /* puutie-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "puutie-Bridging-Header.h"; sourceTree = "<group>"; };
+		596CAA2B2ECFA5B400AB8FAD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -89,6 +94,7 @@
 		593500D82ECCB5BC0035894C = {
 			isa = PBXGroup;
 			children = (
+				596CAA2B2ECFA5B400AB8FAD /* README.md */,
 				593500E32ECCB5BC0035894C /* puutie */,
 				593500FA2ECCB5BD0035894C /* puutieTests */,
 				593501042ECCB5BD0035894C /* puutieUITests */,
@@ -228,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				596CAA2C2ECFA5B400AB8FAD /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,6 +21,7 @@ struct ForgotPasswordOtpStepView: View {
                 }
             }
         }
+        .errorDialog(state: $viewModel.otpStatus)
     }
 }
 

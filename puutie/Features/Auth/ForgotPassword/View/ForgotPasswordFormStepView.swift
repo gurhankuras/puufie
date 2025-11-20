@@ -20,22 +20,6 @@ struct ForgotPasswordFormStepView: View {
         If you didn’t receive it, you can request a new one.
         """
 
-    private var isErrorDialogPresented: Binding<Bool> {
-        Binding(
-            get: {
-                if case .error(_) = viewModel.status {
-                    return true
-                }
-                return false
-            },
-            set: { isPresented in
-                if !isPresented {
-                    viewModel.status = .idle
-                }
-            }
-        )
-    }
-
     var body: some View {
         VStack(spacing: 20) {
             Text(informationText)
@@ -60,9 +44,7 @@ struct ForgotPasswordFormStepView: View {
             }
             .buttonStyle(LongButtonStyle())
         }
-        .customDialog(isPresented: isErrorDialogPresented) {
-            CustomDialog(isPresented: isErrorDialogPresented, message: viewModel.status.errorMessage ?? "")
-        }
+        .errorDialog(state: $viewModel.status)
         .onAppear {
             isFocused = true
         }
