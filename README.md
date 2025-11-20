@@ -7,7 +7,7 @@ A simple iOS app connected to my Spring Boot application.
 ### Login
 
 <p align="center">
-  <img src="Docs/Screenshots/login.png" width="300">
+  <img src="Docs/Screenshots/login.png" width="250">
 </p>
 
 ---
@@ -15,11 +15,8 @@ A simple iOS app connected to my Spring Boot application.
 ### Forgot Password
 
 <p align="center">
-  <img src="Docs/Screenshots/forgot-password-form.png" width="300">
-</p>
-
-<p align="center">
-  <img src="Docs/Screenshots/forgot-password-otp.png" width="300">
+  <img src="Docs/Screenshots/forgot-password-form.png" width="250" style="margin-right: 12px;">
+  <img src="Docs/Screenshots/forgot-password-otp.png" width="250">
 </p>
 
 ---
@@ -27,5 +24,5 @@ A simple iOS app connected to my Spring Boot application.
 ### Force Update
 
 <p align="center">
-  <img src="Docs/Screenshots/force-update.png" width="300">
+  <img src="Docs/Screenshots/force-update.png" width="250">
 </p>
