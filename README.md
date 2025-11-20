@@ -1,21 +1,31 @@
 # puutie
 
-A simple iOS app connected to my spring boot application
+A simple iOS app connected to my Spring Boot application.
 
 ## Screenshots
 
-Login:
+### Login
 
-![Login](Docs/Screenshots/login.png)
+<p align="center">
+  <img src="Docs/Screenshots/login.png" width="300">
+</p>
 
+---
 
-Forgot Password screens:
+### Forgot Password
 
-![Forgot Password Form](Docs/Screenshots/forgot-password-form.png)
+<p align="center">
+  <img src="Docs/Screenshots/forgot-password-form.png" width="300">
+</p>
 
-![Forgot Password Otp](Docs/Screenshots/forgot-password-otp.png)
+<p align="center">
+  <img src="Docs/Screenshots/forgot-password-otp.png" width="300">
+</p>
 
-Force Update:
+---
 
-![Force Update](Docs/Screenshots/force-update.png)
+### Force Update
 
+<p align="center">
+  <img src="Docs/Screenshots/force-update.png" width="300">
+</p>
