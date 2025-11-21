@@ -60,7 +60,7 @@ struct ForgotMyPasswordView: View {
 
     func buildHeader() -> some View {
         HStack {
-            Text("Forgot Your Password?")
+            Text("forgot_password_button_title")
                 .font(.title2.weight(.medium))
                 .foregroundColor(.white)
         }

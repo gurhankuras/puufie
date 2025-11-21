@@ -31,9 +31,8 @@ struct OTPView: View {
 
     var body: some View {
         VStack(spacing: 24) {
-            Text("Enter the 6-digit code")
+            Text("otp_prompt")
                 .font(.headline)
-
             ZStack {
                 // Bu TextField gerçek input’u alıyor (gizli)
                 TextField("", text: codeBinding)
@@ -59,7 +58,7 @@ struct OTPView: View {
             Rectangle().fill(.clear)
                 .frame(height: 30)
 
-            Button("Verify") {
+            Button("otp_prompt_verify_button_title") {
                 action(code)
             }
             .disabled(code.count < length)

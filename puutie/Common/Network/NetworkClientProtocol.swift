@@ -9,16 +9,25 @@ import Foundation
 
 struct EmptyResponse: Decodable {}
 
-
 protocol NetworkClientProtocol {
     func send<T: Decodable>(_ request: URLRequest) async throws -> T
 }
 
 final class NetworkClient: NetworkClientProtocol {
     func send<T: Decodable>(_ request: URLRequest) async throws -> T {
+        var req = request
+        
+        let language = Locale.current.language.languageCode?.identifier
+        req.setValue(
+            language,
+            forHTTPHeaderField: "Accept-Language"
+        )
+        
+        print(req.allHTTPHeaderFields)
+
         do {
             let (data, response) = try await URLSession.shared.data(
-                for: request
+                for: req
             )
 
             guard let http = response as? HTTPURLResponse else {

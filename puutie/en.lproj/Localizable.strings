@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  puutie
+
+  Created by Gurhan on 11/21/25.
+  
+*/
+
+login_title="Login";
+username_placeholder="Username";
+password_placeholder="Password";
+forgot_password_button_title="Forgot your password?";
+sign_in_button_title="Sign In";
+new_user_title="New User?";
+new_user_sign_up_title=" Sign Up";
+send_otp_button_title="Send OTP Code";
+forgot_password_description="
+        We’re going to send a verification code to your email.\n\nPlease enter the code to reset your password in the next step.\n\nThis code is valid for 30 minutes.\nIf you didn’t receive it, you can request a new one.";
+otp_prompt="Enter the 6-digit code";
+otp_prompt_verify_button_title="Verify";
+
+
+

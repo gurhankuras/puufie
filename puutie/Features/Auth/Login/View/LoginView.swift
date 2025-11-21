@@ -13,6 +13,8 @@ enum LoginFields: Hashable {
 }
 
 struct LoginView: View {
+    
+    @Environment(\.sizeCategory) var sizeCategory
     @EnvironmentObject var router: NavigationRouter
     @EnvironmentObject var appManager: AppManager
 
@@ -30,7 +32,7 @@ struct LoginView: View {
         ZStack {
             Color.appDarkAccent.ignoresSafeArea()
             VStack {
-                Text("Login")
+                Text("login_title")
                     .foregroundStyle(.lightShade2)
                     .font(.title.weight(.semibold))
                 usernameTextField
@@ -78,7 +80,7 @@ struct LoginView: View {
         TextField(
             "",
             text: $viewModel.username,
-            prompt: Text("Username").foregroundColor(.lightAccent2)
+            prompt: Text("username_placeholder").foregroundColor(.lightAccent2)
         )
         .textContentType(.username)
         .appTextFieldStyle(
@@ -98,7 +100,7 @@ struct LoginView: View {
         SecureField(
             "",
             text: $viewModel.password,
-            prompt: Text("Password").foregroundColor(.lightAccent2)
+            prompt: Text("password_placeholder").foregroundColor(.lightAccent2)
         )
         .textContentType(.password)
         .appTextFieldStyle(
@@ -115,7 +117,7 @@ struct LoginView: View {
             isForgotSheetOpen = true
 
         } label: {
-            Text("Forgot your password?")
+            Text("forgot_password_button_title")
                 .foregroundStyle(.lightShade2)
                 .font(.callout)
                 .fontWeight(.semibold)
@@ -127,7 +129,7 @@ struct LoginView: View {
     }
 
     private var signInButton: some View {
-        Button("Sign In") {
+        Button("sign_in_button_title") {
             Task {
                 try? await viewModel.login()
             }
@@ -139,10 +141,10 @@ struct LoginView: View {
         Button {
             router.push(.camera)
         } label: {
-            Text("New User?")
+            Text("new_user_title")
                 .foregroundColor(.lightShade2)
                 .font(.callout.weight(.semibold))
-                + Text(message)
+            Text(message)
 
         }
         .padding([.top, .leading, .bottom], 10)
@@ -151,7 +153,9 @@ struct LoginView: View {
     }
 
     private var message: AttributedString {
-        var result = AttributedString(" Sign Up")
+        var result = AttributedString(
+               NSLocalizedString("new_user_sign_up_title", comment: "")
+           )
         result.font = .callout.weight(.bold)
         result.foregroundColor = .accent2
         return result
@@ -159,5 +163,13 @@ struct LoginView: View {
 }
 
 #Preview {
+        LoginView()
+            .environment(\.locale, .init(identifier: "tr"))
+        
+   
+}
+
+#Preview {
     LoginView()
+        .environment(\.locale, .init(identifier: "en"))
 }

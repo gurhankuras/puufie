@@ -11,32 +11,24 @@ struct ForgotPasswordFormStepView: View {
     @Binding var username: String
     @ObservedObject var viewModel: ForgotPasswordViewModel
     @FocusState private var isFocused: Bool
-    private let informationText = """
-        We’re going to send a verification code to your email.
-
-        Please enter the code to reset your password in the next step.
-
-        This code is valid for 30 minutes.
-        If you didn’t receive it, you can request a new one.
-        """
 
     var body: some View {
         VStack(spacing: 20) {
-            Text(informationText)
+            Text("forgot_password_description")
                 .foregroundColor(.lightShade2)
                 .font(.headline.weight(.medium))
                 .padding(10)
             TextField(
                 "",
                 text: $username,
-                prompt: Text("Username").foregroundColor(.lightAccent2)
+                prompt: Text("username_placeholder").foregroundColor(.lightAccent2)
             )
             .booleanTextFieldStyle(isFocused: $isFocused)
             .autocapitalization(.none)
             .autocorrectionDisabled()
             .focused($isFocused)
             
-            Button("Send OTP Code") {
+            Button("send_otp_button_title") {
                 // viewModel.step = .otp
                 Task {
                     await viewModel.requestForgotPassword(for: username)

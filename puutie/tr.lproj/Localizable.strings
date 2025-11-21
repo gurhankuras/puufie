@@ -1,0 +1,19 @@
+/*
+  Localizable (Turkish).strings
+  puutie
+
+  Created by Gurhan on 11/21/25.
+  
+*/
+
+login_title="Giriş Yap";
+username_placeholder="Kullanıcı adı";
+password_placeholder="Şifre";
+forgot_password_button_title="Parolamı unuttum";
+sign_in_button_title="Giriş Yap";
+new_user_title=" ";
+new_user_sign_up_title="Kayıt ol";
+send_otp_button_title="Kodu Gönder";
+forgot_password_description="E-posta adresinize bir doğrulama kodu göndereceğiz.\n\nLütfen bir sonraki adımda şifrenizi sıfırlamak için bu kodu girin.\n\nBu kod 30 dakika boyunca geçerlidir.\nEğer kod elinize ulaşmadıysa yeni bir tane talep edebilirsiniz.";
+otp_prompt="Lütfen 6 haneli kodu giriniz";
+otp_prompt_verify_button_title="Onayla";
