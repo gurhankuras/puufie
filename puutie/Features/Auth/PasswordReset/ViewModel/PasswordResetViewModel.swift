@@ -37,6 +37,7 @@ class PasswordResetViewModel: ObservableObject {
         do {
             try await service.requestForgotPassword(for: username)
             status = .success
+            step = .otp
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {
                 status = .error(object?.message ?? "")
@@ -59,6 +60,7 @@ class PasswordResetViewModel: ObservableObject {
             let response = try await service.verifyOtp(with: request)
             otpStatus = .success(response.token)
             step = .newPassword
+            token = response.token
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {
                 otpStatus = .error(object?.message ?? "")

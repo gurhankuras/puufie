@@ -21,7 +21,9 @@ struct PasswordResetUsernameView: View {
             TextField(
                 "",
                 text: $username,
-                prompt: Text("login.username.placeholder").foregroundColor(.lightAccent2)
+                prompt: Text("login.username.placeholder").foregroundColor(
+                    .lightAccent2
+                )
             )
             .booleanTextFieldStyle(isFocused: $isFocused)
             .autocapitalization(.none)
@@ -29,7 +31,9 @@ struct PasswordResetUsernameView: View {
             .focused($isFocused)
         }
         .onAppear {
-            isFocused = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isFocused = true
+            }
         }
     }
 }

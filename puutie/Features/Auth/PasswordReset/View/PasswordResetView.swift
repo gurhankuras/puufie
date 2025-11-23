@@ -22,8 +22,8 @@ struct PasswordResetView: View {
                     VStack {
                         currentStepView
                     }
-                    .animation(.easeIn, value: viewModel.step)
                 }
+                .animation(.easeIn, value: viewModel.step)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .safeAreaInset(edge: .bottom) {
@@ -38,17 +38,6 @@ struct PasswordResetView: View {
         .errorDialog(state: $viewModel.otpStatus)
         .errorDialog(state: $viewModel.status)
         .errorDialog(state: $viewModel.resetStatus)
-        .onChange(of: viewModel.status) { newValue in
-            if case .success = newValue {
-                viewModel.step = .otp
-            }
-        }
-        .onChange(of: viewModel.otpStatus) { newValue in
-            if case .success(let token) = newValue {
-                viewModel.token = token
-                viewModel.step = .newPassword
-            }
-        }
         .onChange(of: viewModel.resetStatus) { newValue in
             if case .success = newValue {
                 isPresented = false

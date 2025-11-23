@@ -17,7 +17,8 @@ struct PasswordResetNewPasswordView: View {
             TextField(
                 "",
                 text: $newPassword,
-                prompt: Text("reset_password.new_password.placeholder").foregroundColor(.lightAccent2)
+                prompt: Text("reset_password.new_password.placeholder")
+                    .foregroundColor(.lightAccent2)
             )
             .booleanTextFieldStyle(isFocused: $isFocused)
             .autocapitalization(.none)
@@ -26,8 +27,9 @@ struct PasswordResetNewPasswordView: View {
         }
         .padding()
         .onAppear {
-            isFocused = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isFocused = true
+            }
         }
     }
 }
-

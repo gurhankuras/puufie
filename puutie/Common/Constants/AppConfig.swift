@@ -10,14 +10,14 @@ final class AppConfig {
 
     private init() {}
 
-    var environment: AppEnvironment = .dev
+    var environment: AppEnvironment = .staging
 
     var baseURL: String {
         switch environment {
         case .dev:
             return "http://localhost:8080"
         case .staging:
-            return "https://staging.example.com"
+            return "http://192.168.1.103:8080"
         case .prod:
             return "https://api.example.com"
         }

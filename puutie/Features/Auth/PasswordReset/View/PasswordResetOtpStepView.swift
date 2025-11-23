@@ -12,10 +12,7 @@ struct PasswordResetOtpStepView: View {
     @ObservedObject var viewModel: PasswordResetViewModel
 
     var body: some View {
-        ZStack {
-            Color.darkAccent2.ignoresSafeArea()
-            OTPView(code: $viewModel.code)
-        }
+        OTPView(code: $viewModel.code)
     }
 }
 
