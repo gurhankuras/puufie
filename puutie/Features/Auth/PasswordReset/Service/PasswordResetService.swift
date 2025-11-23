@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ForgotPasswordService {
+public class PasswordResetService {
     
     private let client: NetworkClientProtocol
     
@@ -22,21 +22,31 @@ public class ForgotPasswordService {
         
         request.httpMethod = "POST"
         request.httpBody = requestBody
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         let _ = try await client.send(request) as EmptyResponse
     }
     
-    func verifyOtp(with request: OtpVerificationRequest) async throws {
+    func resetPassword(with token: String, providing newPassword: String) async throws {
+        let requestBody = try JSONEncoder().encode(PasswordResetRequest(token: token, newPassword: newPassword))
+        let url = Endpoints.url(Endpoints.forgotPassword.resetPassword)
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "POST"
+        request.httpBody = requestBody
+    
+        let _ = try await client.send(request) as EmptyResponse
+    }
+    
+    func verifyOtp(with request: OtpVerificationRequest) async throws -> OtpVerificationResponse{
         let requestBody = try JSONEncoder().encode(request)
         let url = Endpoints.url(Endpoints.forgotPassword.verifyOtp)
         var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
         request.httpBody = requestBody
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let _ = try await client.send(request) as EmptyResponse
+        let response = try await client.send(request) as OtpVerificationResponse
+        return response
     }
     
     

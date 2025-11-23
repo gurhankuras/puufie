@@ -22,8 +22,7 @@ final class NetworkClient: NetworkClientProtocol {
             language,
             forHTTPHeaderField: "Accept-Language"
         )
-        
-        print(req.allHTTPHeaderFields)
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         do {
             let (data, response) = try await URLSession.shared.data(

@@ -1,35 +1,41 @@
-//
-//  AsyncState.swift
-//  puutie
-//
-//  Created by Gurhan on 11/19/25.
-//
-
 struct Empty: Equatable {}
 
-enum AsyncState<T> {
+enum AsyncState<Value, Failure> {
     case idle
     case loading
-    case success(T)
-    case error(String)
+    case success(Value)
+    case error(Failure)
+}
 
+// Sadece Failure == String iken errorMessage kullanılabilir
+extension AsyncState where Failure == String {
     var errorMessage: String? {
         guard case .error(let msg) = self else { return nil }
         return msg
     }
 }
 
+// Her durumda: sadece error case’i var mı diye bakar
 extension AsyncState {
     var hasError: Bool {
-        errorMessage != nil
+        if case .error = self { return true }
+        return false
     }
 }
 
-extension AsyncState: Equatable where T: Equatable {}
+// Equatable desteği: hem Value hem Failure Equatable ise
+extension AsyncState: Equatable where Value: Equatable, Failure: Equatable {}
 
-extension AsyncState where T == Void {
-    static var success: AsyncState { .success(()) }
+// success(Void) için: .success yazabil
+extension AsyncState where Value == Void {
+    static var success: AsyncState {
+        .success(())
+    }
 }
-extension AsyncState where T == Empty {
-    static var success: AsyncState { .success(.init()) }
+
+// success(Empty()) için: .success yazabil
+extension AsyncState where Value == Empty {
+    static var success: AsyncState {
+        .success(.init())
+    }
 }

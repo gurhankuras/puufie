@@ -73,7 +73,7 @@ struct SplashView: View {
                 dismissible: false,
                 message: message
             ) {
-                Button("Retry") {
+                Button("version_check.retry") {
                     Task {
                         await session.getVersion()
                     }

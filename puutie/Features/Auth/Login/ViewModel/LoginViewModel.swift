@@ -25,10 +25,10 @@ extension LoginState {
 }
 
 class LoginViewModel: ObservableObject {
-    private let client: NetworkClientProtocol
+    private let authService: AuthService
 
-    init(client: NetworkClientProtocol) {
-        self.client = client
+    init(authService: AuthService) {
+        self.authService = authService
 
         $state
             .dropFirst()
@@ -44,23 +44,13 @@ class LoginViewModel: ObservableObject {
     @Published var state: LoginState = .idle
     @Published var isValid: Bool = true
     @Published var hasError: Bool = false
+    
 
     @MainActor
     func login() async throws {
         state = .loading
-        let credentials = LoginCredentials(
-            username: username,
-            password: password
-        )
-        // guard let url = URL(string: "http://localhost:8080/api/auth/login")
-        let url = Endpoints.url(Endpoints.auth.login)
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         do {
-            let requestBody = try JSONEncoder().encode(credentials)
-            request.httpBody = requestBody
-            let res: LoginResponse = try await client.send(request)
+            let res = try await authService.login(username: username, password: password)
             state = .success(res.accessToken)
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {

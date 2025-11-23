@@ -10,4 +10,5 @@ enum Route: Hashable {
     case home
     case camera
     case splash
+    case signUp
 }

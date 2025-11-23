@@ -26,4 +26,5 @@ struct ApiErrorObject: Decodable {
     let type: String
     let code: String
     let message: String
+    let details: [String: JSONValue]?
 }

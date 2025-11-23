@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  LoginView.swift
 //  puutie
 //
 //  Created by Gurhan on 11/18/25.
@@ -12,49 +12,68 @@ enum LoginFields: Hashable {
     case password
 }
 
-struct LoginView: View {
-    
-    @Environment(\.sizeCategory) var sizeCategory
+struct LoginView: View, KeyboardReadable {
     @EnvironmentObject var router: NavigationRouter
     @EnvironmentObject var appManager: AppManager
 
-    @StateObject private var viewModel: LoginViewModel
-    @State private var isForgotSheetOpen = false
-    @FocusState private var focusedField: LoginFields?
+    @StateObject private var viewModel: LoginViewModel = AppContainer.shared
+        .buildLoginViewModel()
 
-    init() {
-        _viewModel = StateObject(
-            wrappedValue: AppContainer.shared.buildLoginViewModel()
-        )
-    }
+    @FocusState private var focusedField: LoginFields?
+    @State private var isForgotSheetOpen = false
+    @State private var isKeyboardVisible: Bool = false
 
     var body: some View {
         ZStack {
-            Color.appDarkAccent.ignoresSafeArea()
+            LinearGradient(
+                colors: [.darkAccent2, .black],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+
             VStack {
-                Text("login_title")
-                    .foregroundStyle(.lightShade2)
-                    .font(.title.weight(.semibold))
-                usernameTextField
-                passwordTextField
-                forgotPasswordLinkButton
-                signInButton
-                signUpButton
+                ScrollView {
+                    VStack(spacing: 24) {
+                        Spacer(minLength: 60)
+
+                        // Card
+                        VStack(alignment: .leading, spacing: 20) {
+                            headerSection
+                            avatarSection
+                            usernameTextField
+                            PasswordTextField(
+                                text: $viewModel.password,
+                                focusedField: $focusedField,
+                                placeholder: "login.password.placeholder"
+                            )
+                            forgotPasswordLinkButton
+                            signInButton
+                            signUpButton
+                        }
+                        .customCard()
+                        .padding(.horizontal, 24)
+
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+
             }
-            .padding(20)
+            .overlay(alignment: .bottomTrailing) {
+                VersionText()
+                    .padding(12)
+                    .opacity(isKeyboardVisible ? 0 : 1)
+            }
 
             if case .loading = viewModel.state {
                 LoadingView()
             }
         }
-        .overlay(alignment: .bottomTrailing) {
-            VersionText()
-                .padding(12)
-        }
         .sheet(
             isPresented: $isForgotSheetOpen,
             content: {
-                ForgotMyPasswordView(
+                PasswordResetView(
                     username: $viewModel.username,
                     isPresented: $isForgotSheetOpen
                 )
@@ -66,110 +85,128 @@ struct LoginView: View {
                 message: viewModel.state.failureMessage
             )
         }
-        .onChange(
-            of: viewModel.state,
-            perform: { newValue in
-                if case .success(_) = newValue {
-                    appManager.didLogin()
-                }
+        .onChange(of: viewModel.state) { newValue in
+            if case .success = newValue {
+                appManager.didLogin()
             }
-        )
+        }
+        .onReceive(keyboardPublisher) { newIsKeyboardVisible in
+            isKeyboardVisible = newIsKeyboardVisible
+        }
     }
+
+    // MARK: - Sections
+
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("login.title")  // "Giriş Yap" vs.
+                .foregroundStyle(.lightShade2)
+                .font(.title2.weight(.semibold))
+
+            Text("login.subtitle")  // "Devam etmek için giriş yapın" gibi bir key ekleyebilirsin
+                .font(.subheadline)
+                .foregroundColor(.lightAccent2)
+        }
+    }
+
+    private var avatarSection: some View {
+        HStack {
+            Spacer()
+            ZStack {
+                Circle()
+                    .fill(Color.darkAccent2)
+                    .frame(width: 80, height: 80)
+
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.lightShade2)
+            }
+            Spacer()
+        }
+        .padding(.vertical, 8)
+    }
+
+    // MARK: - Fields & Buttons
 
     private var usernameTextField: some View {
         TextField(
             "",
             text: $viewModel.username,
-            prompt: Text("username_placeholder").foregroundColor(.lightAccent2)
+            prompt: Text("login.username.placeholder")
+                .foregroundColor(.lightAccent2)
         )
         .textContentType(.username)
         .appTextFieldStyle(
-            field: LoginFields.username,
+            field: .username,
             focusedField: $focusedField
         )
         .textInputAutocapitalization(.never)
-        .padding(.bottom)
-        .focused($focusedField, equals: LoginFields.username)
+        .focused($focusedField, equals: .username)
         .submitLabel(.next)
         .onSubmit {
             focusedField = .password
         }
     }
 
-    private var passwordTextField: some View {
-        SecureField(
-            "",
-            text: $viewModel.password,
-            prompt: Text("password_placeholder").foregroundColor(.lightAccent2)
-        )
-        .textContentType(.password)
-        .appTextFieldStyle(
-            field: LoginFields.password,
-            focusedField: $focusedField
-        )
-        .textInputAutocapitalization(.never)
-        .focused($focusedField, equals: LoginFields.password)
-        .submitLabel(.go)
-    }
-
     private var forgotPasswordLinkButton: some View {
         Button {
             isForgotSheetOpen = true
-
         } label: {
-            Text("forgot_password_button_title")
+            Text("login.forgot_password")
                 .foregroundStyle(.lightShade2)
-                .font(.callout)
-                .fontWeight(.semibold)
-
+                .font(.callout.weight(.semibold))
         }
-        .padding([.top, .leading, .bottom], 10)
-        .contentShape(Rectangle())
+        .padding(.top, 4)
         .frame(maxWidth: .infinity, alignment: .trailing)
+        .contentShape(Rectangle())
     }
 
     private var signInButton: some View {
-        Button("sign_in_button_title") {
+        Button("login.sign_in") {  // key’deki extra boşluğu sildim
             Task {
                 try? await viewModel.login()
             }
         }
         .buttonStyle(LongButtonStyle())
+        .padding(.top, 4)
     }
 
     private var signUpButton: some View {
         Button {
-            router.push(.camera)
+            router.push(.signUp)
         } label: {
-            Text("new_user_title")
-                .foregroundColor(.lightShade2)
-                .font(.callout.weight(.semibold))
-            Text(message)
+            HStack(spacing: 4) {
+                Text("login.new_user.title")  // "Hesabın yok mu?" gibi
+                    .foregroundColor(.lightShade2)
+                    .font(.callout)
 
+                Text(message)  // "Sign Up" kısmı daha vurgulu
+            }
         }
-        .padding([.top, .leading, .bottom], 10)
-        .contentShape(Rectangle())
+        .padding(.top, 6)
         .frame(maxWidth: .infinity, alignment: .center)
+        .contentShape(Rectangle())
     }
 
     private var message: AttributedString {
         var result = AttributedString(
-               NSLocalizedString("new_user_sign_up_title", comment: "")
-           )
-        result.font = .callout.weight(.bold)
+            NSLocalizedString("login.new_user.sign_up", comment: "")
+        )
+        result.font = .callout.bold()
         result.foregroundColor = .accent2
         return result
     }
 }
 
 #Preview {
-        LoginView()
-            .environment(\.locale, .init(identifier: "tr"))
-        
-   
+    LoginView()
+        .environment(\.locale, .init(identifier: "tr"))
 }
 
 #Preview {
     LoginView()
         .environment(\.locale, .init(identifier: "en"))
+
 }

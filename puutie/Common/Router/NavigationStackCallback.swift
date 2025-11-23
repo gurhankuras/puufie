@@ -18,6 +18,8 @@ func destination(for route: Route) -> some View {
         CameraView()
     case .splash:
         SplashView()
+    case .signUp:
+        SignupView()
     }
     
 }

@@ -11,28 +11,34 @@ final class AppContainer {
 
     // Public servisler (arayüz)
     let networkClient: NetworkClientProtocol
-    let otpService: ForgotPasswordService
+    let otpService: PasswordResetService
     let appVersionService: AppVersionService
+    let authService: AuthService
     
     private init() {
         // 1) Ortak bağımlılıkları önce oluştur
         let client = NetworkClient()
         
         self.networkClient = client
-        self.otpService = ForgotPasswordService(client: client)
+        self.otpService = PasswordResetService(client: client)
         self.appVersionService = AppVersionService(client: client)
+        self.authService = AuthService(client: client)
     }
     
     func buildLoginViewModel() -> LoginViewModel {
-        return LoginViewModel(client: networkClient)
+        return LoginViewModel(authService: authService)
     }
     
-    func buildForgotPasswordViewModel() -> ForgotPasswordViewModel {
-        return ForgotPasswordViewModel(service: otpService)
+    func buildForgotPasswordViewModel() -> PasswordResetViewModel {
+        return PasswordResetViewModel(service: otpService)
     }
     
     func buildAppManager() -> AppManager {
         return AppManager(appVersionService: appVersionService)
+    }
+    
+    func buildSignupViewModel() -> SignupViewModel {
+        return SignupViewModel(authService: authService)
     }
 }
 

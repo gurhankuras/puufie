@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
     func errorDialog<T>(
-        state: Binding<AsyncState<T>>,
+        state: Binding<AsyncState<T, String>>,
         dismissible: Bool = true
     ) -> some View {
         self.customDialog(

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-func errorDialogBinding<T>(_ state: Binding<AsyncState<T>>) -> Binding<Bool> {
+func errorDialogBinding<T>(_ state: Binding<AsyncState<T, String>>) -> Binding<Bool> {
     Binding(
         get: {
             state.wrappedValue.errorMessage != nil

@@ -8,13 +8,9 @@
 import SwiftUI
 
 struct OTPView: View {
-    @State private var code: String = ""
+    @Binding var code: String
     @FocusState private var isKeyboardFocused: Bool
-    private let action: (String) -> Void
-    
-    init(action: @escaping (String) -> Void) {
-        self.action = action
-    }
+
 
     private let length = 6
 
@@ -31,7 +27,7 @@ struct OTPView: View {
 
     var body: some View {
         VStack(spacing: 24) {
-            Text("otp_prompt")
+            Text("reset_password.otp.prompt")
                 .font(.headline)
             ZStack {
                 // Bu TextField gerçek input’u alıyor (gizli)
@@ -58,12 +54,14 @@ struct OTPView: View {
             Rectangle().fill(.clear)
                 .frame(height: 30)
 
-            Button("otp_prompt_verify_button_title") {
+            /*
+            Button("reset_password.otp.verify") {
                 action(code)
             }
             .disabled(code.count < length)
             .foregroundStyle(code.count < length ?  .lightAccent2 : .accent2)
             .font(.title3.weight(.semibold))
+             */
         }
         .padding()
         .onAppear {
@@ -123,9 +121,7 @@ fileprivate struct CursorView: View {
 struct OTPView_Previews: PreviewProvider {
 
     static var previews: some View {
-        OTPView { _ in
-            
-        }
+        OTPView(code: .constant("345633"))
     }
 
 }
