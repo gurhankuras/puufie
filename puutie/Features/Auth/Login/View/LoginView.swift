@@ -36,11 +36,10 @@ struct LoginView: View, KeyboardReadable {
                 ScrollView {
                     VStack(spacing: 24) {
                         Spacer(minLength: 60)
-
                         // Card
                         VStack(alignment: .leading, spacing: 20) {
                             headerSection
-                            avatarSection
+                            AvatarView()
                             usernameTextField
                             PasswordTextField(
                                 text: $viewModel.password,
@@ -65,10 +64,9 @@ struct LoginView: View, KeyboardReadable {
                     .padding(12)
                     .opacity(isKeyboardVisible ? 0 : 1)
             }
+            .loadingOverlay(state: viewModel.state)
 
-            if case .loading = viewModel.state {
-                LoadingView()
-            }
+            
         }
         .sheet(
             isPresented: $isForgotSheetOpen,
@@ -82,7 +80,7 @@ struct LoginView: View, KeyboardReadable {
         .customDialog(isPresented: $viewModel.hasError) {
             CustomDialog(
                 isPresented: $viewModel.hasError,
-                message: viewModel.state.failureMessage
+                message: viewModel.state.errorMessage ?? ""
             )
         }
         .onChange(of: viewModel.state) { newValue in
@@ -107,25 +105,6 @@ struct LoginView: View, KeyboardReadable {
                 .font(.subheadline)
                 .foregroundColor(.lightAccent2)
         }
-    }
-
-    private var avatarSection: some View {
-        HStack {
-            Spacer()
-            ZStack {
-                Circle()
-                    .fill(Color.darkAccent2)
-                    .frame(width: 80, height: 80)
-
-                Image(systemName: "person.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.lightShade2)
-            }
-            Spacer()
-        }
-        .padding(.vertical, 8)
     }
 
     // MARK: - Fields & Buttons

@@ -21,7 +21,7 @@ struct CustomDialog<ActionContent: View>: View {
 
     init(
         isPresented: Binding<Bool>,
-        title: String = "Error",
+        title: String = String(localized: "custom_model.title.default"),
         dismissible: Bool = true,
         message: String,
         @ViewBuilder actions: @escaping () -> ActionContent

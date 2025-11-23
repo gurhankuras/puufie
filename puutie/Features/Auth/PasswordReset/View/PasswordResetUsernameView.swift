@@ -30,10 +30,6 @@ struct PasswordResetUsernameView: View {
             .autocorrectionDisabled()
             .focused($isFocused)
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isFocused = true
-            }
-        }
+        .focusOnAppear($isFocused)
     }
 }

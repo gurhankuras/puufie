@@ -15,16 +15,17 @@ login.sign_in="Sign In";
 login.new_user.title="New User?";
 login.new_user.sign_up=" Sign Up";
 
+
 reset_password.title="Reset Password";
 reset_password.send_otp="Send OTP Code";
-reset_password.description="
-        We’re going to send a verification code to your email.\n\nPlease enter the code to reset your password in the next step.\n\nThis code is valid for 30 minutes.\nIf you didn’t receive it, you can request a new one.";
+reset_password.description="We’re going to send a verification code to your email.\n\nPlease enter the code to reset your password in the next step.\n\nThis code is valid for 30 minutes.\nIf you didn’t receive it, you can request a new one.";
 reset_password.otp.prompt="Enter the 6-digit code";
 reset_password.otp.verify="Verify";
 reset_password.new_password.placeholder="New Password";
 reset_password.reset_button="Reset";
 
 sign_up.button.label="Register";
+sign_up.subtitle="Create your account to continue";
 sign_up.password_validation.empty = "Cannot be empty.";
 sign_up.password_validation.min_length = "Must be at least %d characters long.";
 sign_up.password_validation.max_length = "Must be at most %d characters long.";
@@ -32,7 +33,10 @@ sign_up.password_validation.requires_uppercase = "Must contain at least one uppe
 sign_up.password_validation.requires_lowercase = "Must contain at least one lowercase letter.";
 sign_up.password_validation.requires_number = "Must contain at least one digit.";
 sign_up.password_validation.requires_special = "Must contain at least one special character.";
+sign_up.password.rules.title="Password must meet the following rules:";
 
+
+custom_model.title.default="Error";
 
 
 version_check.error = "We couldn't check the latest version. Please try again later.";

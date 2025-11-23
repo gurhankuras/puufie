@@ -17,19 +17,22 @@ struct PasswordResetView: View {
         ZStack(alignment: .top) {
             Color.darkAccent2.ignoresSafeArea()
             VStack(spacing: 0) {
-                buildHeader()
+                PasswordResetHeader(onClose: onTapButton)
                 ScrollView {
                     VStack {
                         currentStepView
                     }
                 }
-                .animation(.easeIn, value: viewModel.step)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .safeAreaInset(edge: .bottom) {
-                bottomBar
+                PasswordResetBottomBar(
+                    isDisabled: isPrimaryButtonDisabled,
+                    title: primaryButtonTitle,
+                    onTap: handlePrimaryAction
+                )
             }
-            if viewModel.status == .loading || viewModel.otpStatus == .loading || viewModel.resetStatus == .loading {
+            if viewModel.status.isLoading || viewModel.otpStatus.isLoading || viewModel.resetStatus.isLoading {
                 LoadingView()
             }
         }
@@ -38,6 +41,21 @@ struct PasswordResetView: View {
         .errorDialog(state: $viewModel.otpStatus)
         .errorDialog(state: $viewModel.status)
         .errorDialog(state: $viewModel.resetStatus)
+        .onChange(of: viewModel.status) { newValue in
+            if case .success = newValue {
+                withAnimation(.easeOut(duration: 0.25)) {
+                    viewModel.step = .otp
+                }
+            }
+        }
+        .onChange(of: viewModel.otpStatus) { newValue in
+            if case .success(let token) = newValue {
+                viewModel.token = token
+                withAnimation(.easeOut(duration: 0.25)) {
+                    viewModel.step = .newPassword
+                }
+            }
+        }
         .onChange(of: viewModel.resetStatus) { newValue in
             if case .success = newValue {
                 isPresented = false
@@ -54,12 +72,7 @@ struct PasswordResetView: View {
                     username: $username,
                     viewModel: viewModel
                 )
-                .transition(
-                    .asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
-                    )
-                )
+                .transition(.defaultPageTransition)
                 .padding()
             }
 
@@ -68,12 +81,7 @@ struct PasswordResetView: View {
                     username: username,
                     viewModel: viewModel
                 )
-                .transition(
-                    .asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
-                    )
-                )
+                .transition(.defaultPageTransition)
                 .padding()
             }
 
@@ -82,41 +90,12 @@ struct PasswordResetView: View {
                     viewModel: viewModel,
                     newPassword: $viewModel.newPassword
                 )
-                .transition(
-                    .asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
-                    )
-                )
+                .transition(.defaultPageTransition)
                 .padding()
             }
         }
     }
 
-
-    var bottomBar: some View {
-        VStack(spacing: 0) {
-            Divider()
-                .background(Color.lightShade2.opacity(0.3))
-
-            HStack {
-                Button(action: handlePrimaryAction) {
-                    Text(primaryButtonTitle)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(LongButtonStyle())
-                .grayscale(isPrimaryButtonDisabled ? 1 : 0)
-                .opacity(isPrimaryButtonDisabled ? 0.6 : 1)
-                .disabled(isPrimaryButtonDisabled)
-            }
-            .animation(.easeIn(duration: 0.2), value: isPrimaryButtonDisabled)
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-            .padding(.bottom, 12)
-        }
-        // Sheet’in alt kısmını blur / material yapmak istersen:
-        .background(.ultraThinMaterial)
-    }
 
     var primaryButtonTitle: LocalizedStringKey {
         switch viewModel.step {
@@ -140,46 +119,10 @@ struct PasswordResetView: View {
                 || viewModel.resetStatus == .loading
         }
     }
-
+    
     func handlePrimaryAction() {
-        switch viewModel.step {
-        case .form:
-            Task {
-                await viewModel.requestForgotPassword(for: username)
-            }
-        case .otp:
-            Task {
-                await viewModel.submitOtp(for: username, otp: viewModel.code)
-            }
-        case .newPassword:
-            Task {
-                await viewModel.resetPassword(
-                    newPassword: viewModel.newPassword
-                )
-            }
-        }
-    }
-
-    func buildHeader() -> some View {
-        HStack {
-            Text("reset_password.title")
-                .font(.title2.weight(.medium))
-                .foregroundColor(.white)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(24)
-        .background(Color.darkShade2.opacity(0.5))
-        .overlay(alignment: .leading) {
-            Button(action: onTapButton) {
-                Image(
-                    systemName: "xmark"
-                )
-                .padding()
-                .imageScale(.large)
-                .foregroundColor(Color.white)
-                .containerShape(.rect)
-
-            }
+        Task {
+            await viewModel.handleCurrentStepAction(username: username)
         }
     }
 
@@ -187,6 +130,7 @@ struct PasswordResetView: View {
         isPresented = false
     }
 }
+
 
 struct PasswordResetView_Previews: PreviewProvider {
     static var previews: some View {
