@@ -18,8 +18,6 @@ struct RootView: View {
             case .unauthenticated:
                 NavigationStack(path: $router.path) {
                     LoginView()
-                        .environmentObject(router)
-                        .environmentObject(session)
                         .navigationBarBackButtonHidden(true)
                         .navigationDestination(
                             for: Route.self,
@@ -30,8 +28,6 @@ struct RootView: View {
             case .authenticated:
                 NavigationStack(path: $router.path) {
                     HomeView()
-                        .environmentObject(router)
-                        .environmentObject(session)
                         .navigationBarBackButtonHidden(true)  // root: Home
                         .navigationDestination(
                             for: Route.self,
@@ -54,8 +50,13 @@ struct RootView: View {
                     .zIndex(1)
             }
         }
+        .environmentObject(router)
+        .environmentObject(session)
         .preferredColorScheme(.dark)
-        .animation(session.phase == .authenticated ? .none : .easeOut(duration: 0.45), value: session.phase)
+        .animation(
+            session.phase == .authenticated ? .none : .easeOut(duration: 0.45),
+            value: session.phase
+        )
         .dismissKeyboardOnTap()
     }
 }

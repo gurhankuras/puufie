@@ -6,14 +6,34 @@
   
 */
 
-login_title="Giriş Yap";
-username_placeholder="Kullanıcı adı";
-password_placeholder="Şifre";
-forgot_password_button_title="Parolamı unuttum";
-sign_in_button_title="Giriş Yap";
-new_user_title=" ";
-new_user_sign_up_title="Kayıt ol";
-send_otp_button_title="Kodu Gönder";
-forgot_password_description="E-posta adresinize bir doğrulama kodu göndereceğiz.\n\nLütfen bir sonraki adımda şifrenizi sıfırlamak için bu kodu girin.\n\nBu kod 30 dakika boyunca geçerlidir.\nEğer kod elinize ulaşmadıysa yeni bir tane talep edebilirsiniz.";
-otp_prompt="Lütfen 6 haneli kodu giriniz";
-otp_prompt_verify_button_title="Onayla";
+login.title="Giriş Yap";
+login.subtitle="Şimdi Giriş Yap";
+login.username.placeholder="Kullanıcı adı";
+login.password.placeholder="Şifre";
+login.forgot_password="Parolamı unuttum";
+login.sign_in="Giriş Yap";
+login.new_user.title=" ";
+login.new_user.sign_up="Kayıt ol";
+
+reset_password.title="Şifremi Sıfırla";
+reset_password.send_otp="Kodu Gönder";
+reset_password.description="E-posta adresinize bir doğrulama kodu göndereceğiz.\n\nLütfen bir sonraki adımda şifrenizi sıfırlamak için bu kodu girin.\n\nBu kod 30 dakika boyunca geçerlidir.\nEğer kod elinize ulaşmadıysa yeni bir tane talep edebilirsiniz.";
+reset_password.otp.prompt="Lütfen 6 haneli kodu giriniz";
+reset_password.otp.verify="Onayla";
+reset_password.new_password.placeholder="Yeni Şifre";
+reset_password.reset_button="Sıfırla";
+
+sign_up.button.label="Kayıt Ol";
+sign_up.password_validation.empty = "Password cannot be empty.";
+sign_up.password_validation.min_length = "Password must be at least %d characters long.";
+sign_up.password_validation.max_length = "Password must be at most %d characters long.";
+sign_up.password_validation.requires_uppercase = "Password must contain at least one uppercase letter.";
+sign_up.password_validation.requires_lowercase = "Password must contain at least one lowercase letter.";
+sign_up.password_validation.requires_number = "Password must contain at least one digit.";
+sign_up.password_validation.requires_special = "Password must contain at least one special character.";
+
+
+version_check.error = "Uygulama versiyonu kontrol edilemedi. Lütfen daha sonra tekrar deneyiniz.";
+version_check.retry="Yeniden Dene";
+
+

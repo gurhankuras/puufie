@@ -23,7 +23,7 @@ final class AppManager: ObservableObject {
     @Published var phase: AppPhase = .splash
     @Published var versionDialogState: VersionDialogState = .none
 
-    var versionInfo: AsyncState<RemoteAppVersionResponse> = .idle
+    var versionInfo: AsyncState<RemoteAppVersionResponse, String> = .idle
 
     private let appVersionService: AppVersionService
 
@@ -39,7 +39,7 @@ final class AppManager: ObservableObject {
         } catch {
             self.versionInfo = .error(error.localizedDescription)
             versionDialogState = .error(
-                "We couldn't check the latest version. Please try again later."
+               String(localized: "version_check.error")
             )
         }
     }
