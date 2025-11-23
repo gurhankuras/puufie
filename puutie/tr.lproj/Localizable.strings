@@ -24,6 +24,7 @@ reset_password.new_password.placeholder="Yeni Şifre";
 reset_password.reset_button="Sıfırla";
 
 sign_up.button.label="Kayıt Ol";
+sign_up.subtitle="Devam etmek icin simdi hesap olustur";
 sign_up.password_validation.empty = "Password cannot be empty.";
 sign_up.password_validation.min_length = "Password must be at least %d characters long.";
 sign_up.password_validation.max_length = "Password must be at most %d characters long.";
@@ -31,6 +32,9 @@ sign_up.password_validation.requires_uppercase = "Password must contain at least
 sign_up.password_validation.requires_lowercase = "Password must contain at least one lowercase letter.";
 sign_up.password_validation.requires_number = "Password must contain at least one digit.";
 sign_up.password_validation.requires_special = "Password must contain at least one special character.";
+sign_up.password.rules.title="Oluşturacağınız şifre aşağıdaki kuralları sağlamalıdır:";
+
+custom_model.title.default="Hata";
 
 
 version_check.error = "Uygulama versiyonu kontrol edilemedi. Lütfen daha sonra tekrar deneyiniz.";

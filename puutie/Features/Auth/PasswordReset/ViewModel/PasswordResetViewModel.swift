@@ -37,7 +37,6 @@ class PasswordResetViewModel: ObservableObject {
         do {
             try await service.requestForgotPassword(for: username)
             status = .success
-            step = .otp
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {
                 status = .error(object?.message ?? "")
@@ -59,7 +58,6 @@ class PasswordResetViewModel: ObservableObject {
             )
             let response = try await service.verifyOtp(with: request)
             otpStatus = .success(response.token)
-            step = .newPassword
             token = response.token
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {
@@ -88,6 +86,17 @@ class PasswordResetViewModel: ObservableObject {
             resetStatus = .error("Something went wrong.")
         } catch {
             resetStatus = .error("Unexpected error.")
+        }
+    }
+    
+    func handleCurrentStepAction(username: String) async {
+        switch step {
+        case .form:
+            await requestForgotPassword(for: username)
+        case .otp:
+            await submitOtp(for: username, otp: code)
+        case .newPassword:
+            await resetPassword(newPassword: newPassword)
         }
     }
 }

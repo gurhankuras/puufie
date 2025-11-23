@@ -17,8 +17,13 @@ extension AsyncState where Failure == String {
 
 // Her durumda: sadece error case’i var mı diye bakar
 extension AsyncState {
-    var hasError: Bool {
+    var isError: Bool {
         if case .error = self { return true }
+        return false
+    }
+
+    var isLoading: Bool {
+        if case .loading = self { return true }
         return false
     }
 }
