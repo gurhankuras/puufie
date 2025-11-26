@@ -18,10 +18,12 @@ final class AppContainer {
     let authService: AuthService
     let accessTokenProvider: AccessTokenProvider
     let requestAuthorizer: RequestAuthorizing
+    let userService: UserService
 
     private init() {
         // 1) Ortak bağımlılıkları önce oluştur
         KeychainConfig.environmentSuffix = AppEnvironment.staging.rawValue
+        
 
         self.accessTokenProvider = AccessTokenManager(
             store: KeychainTokenStore()
@@ -42,7 +44,8 @@ final class AppContainer {
             client: client,
             accessTokenProvider: accessTokenProvider
         )
-
+        
+        self.userService = UserService(client: networkClient)
     }
 
     func buildLoginViewModel() -> LoginViewModel {
@@ -65,5 +68,9 @@ final class AppContainer {
 
     func buildSignupViewModel() -> SignupViewModel {
         return SignupViewModel(authService: authService)
+    }
+    
+    func buildUserListViewModel() -> UserListViewModel {
+        return UserListViewModel(userService: userService)
     }
 }

@@ -11,28 +11,25 @@ enum SampleUsers {
     static func make() -> [UserItem] {
         [
             .init(
-                id: UUID(),
+                id: 1,
                 email: "ayse@acme.com",
                 firstName: "Ayşe",
                 lastName: "Yılmaz",
                 username: "ayse",
-                isActive: true
             ),
             .init(
-                id: UUID(),
+                id: 2,
                 email: "mehmet@acme.com",
                 firstName: "Mehmet",
                 lastName: "Demir",
                 username: "mehmetd",
-                isActive: true
             ),
             .init(
-                id: UUID(),
+                id: 3,
                 email: "guest@acme.com",
                 firstName: "",
                 lastName: "",
                 username: "guest",
-                isActive: false
             ),
         ]
     }

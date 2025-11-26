@@ -25,7 +25,7 @@ func destination(for route: Route) -> some View {
     case .permissions:
         PermissionsView()
     case .users:
-        UsersListView(viewModel: UserListViewModel())
+        UsersListView(viewModel: AppContainer.shared.buildUserListViewModel())
     case .profiles:
         ProfilesView()
     case .roles:

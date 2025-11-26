@@ -26,6 +26,11 @@ reset_password.reset_button="Reset";
 
 sign_up.button.label="Register";
 sign_up.subtitle="Create your account to continue";
+sign_up.first_name.placeholder="First Name";
+sign_up.last_name.placeholder="Last Name";
+sign_up.email.placeholder="Email";
+sign_up.phone.placeholder="Phone";
+sign_up.marketing_consent="Marketing consent";
 sign_up.password_validation.empty = "Cannot be empty.";
 sign_up.password_validation.min_length = "Must be at least %d characters long.";
 sign_up.password_validation.max_length = "Must be at most %d characters long.";

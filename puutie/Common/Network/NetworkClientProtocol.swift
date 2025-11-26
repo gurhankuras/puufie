@@ -1,51 +1,77 @@
-//
-//  NetworkClientProtocol.swift
-//  puutie
-//
-//  Created by Gurhan on 11/18/25.
-//
-
 import Foundation
 
 struct EmptyResponse: Decodable {}
 
 protocol NetworkClientProtocol {
-    func send<T: Decodable>(_ request: URLRequest) async throws -> T
+    func send<T: Decodable>(_ request: inout URLRequest) async throws -> T
 }
 
 final class NetworkClient: NetworkClientProtocol {
     private let urlSession: URLSession
     private let requestAuthorizer: RequestAuthorizing
-    
-    init(urlSession: URLSession = .shared, requestAuthorizer: RequestAuthorizing) {
+    private let decoder: JSONDecoder
+
+    init(
+        urlSession: URLSession = .shared,
+        requestAuthorizer: RequestAuthorizing,
+        decoder: JSONDecoder = {
+            let d = JSONDecoder()
+            d.dateDecodingStrategy = .iso8601
+            return d
+        }()
+    ) {
         self.urlSession = urlSession
         self.requestAuthorizer = requestAuthorizer
+        self.decoder = decoder
     }
-    
-    func send<T: Decodable>(_ request: URLRequest) async throws -> T {
-        var req = request
-        
-        let language = Locale.current.language.languageCode?.identifier
-        req.setValue(
-            language,
-            forHTTPHeaderField: "Accept-Language"
-        )
-        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        requestAuthorizer.authorize(&req)
+
+    func send<T: Decodable>(_ request: inout URLRequest) async throws -> T {
+
+        if request.cachePolicy == .useProtocolCachePolicy {
+            // ok
+        } else {
+            request.cachePolicy = .useProtocolCachePolicy
+        }
+
+        // Accept-Language (varsa)
+        if let language = Locale.current.language.languageCode?.identifier {
+            request.setValue(language, forHTTPHeaderField: "Accept-Language")
+        }
+
+        // Yetkilendirme
+        requestAuthorizer.authorize(&request)
 
         do {
-            let (data, response) = try await URLSession.shared.data(
-                for: req
-            )
+            let (data, response) = try await urlSession.data(for: request)
 
             guard let http = response as? HTTPURLResponse else {
                 throw APIError.unknown
             }
 
-            // 2xx değilse server error
+            // 401 özel eşleme
+            if http.statusCode == 401 {
+                throw APIError.unauthorized
+            }
+
+            // 🔽 304: cached gövdeyi kullan
+            if http.statusCode == 304 {
+                // request ile eşleşen cached response'u al
+                if let cached = URLCache.shared.cachedResponse(for: request) {
+                    do {
+                        // Burada cached.response normalde eski 200 cevabıdır
+                        return try decoder.decode(T.self, from: cached.data)
+                    } catch {
+                        throw APIError.decoding
+                    }
+                } else {
+                    // Cache yoksa bu bir tutarsızlık; sunucu body göndermedi
+                    throw APIError.unknown
+                }
+            }
+
+            // 2xx dışı HTTP → server
             guard (200..<300).contains(http.statusCode) else {
-                let errorBody = try? JSONDecoder().decode(
+                let errorBody = try? decoder.decode(
                     ApiErrorObject.self,
                     from: data
                 )
@@ -54,19 +80,27 @@ final class NetworkClient: NetworkClientProtocol {
                     body: errorBody
                 )
             }
-            // handle http status code 204 no response
-            if http.statusCode == 204 && T.self == EmptyResponse.self {
-                return EmptyResponse() as! T
-            }
-            guard let result = try? JSONDecoder().decode(T.self, from: data)
-            else {
+
+            // 204 No Content veya boş gövde
+            if http.statusCode == 204 || data.isEmpty {
+                if T.self == EmptyResponse.self {
+                    return EmptyResponse() as! T
+                }
+                // bazı 200'ler de boş dönebilir; decode etmeyi denemeyelim
                 throw APIError.decoding
             }
-            return result
+
+            do {
+                return try decoder.decode(T.self, from: data)
+            } catch {
+                print(error)
+                throw APIError.decoding
+            }
 
         } catch let apiError as APIError {
             throw apiError
         } catch {
+            // URLSession hatalarını tek yerden sar
             throw APIError.transport(error)
         }
     }

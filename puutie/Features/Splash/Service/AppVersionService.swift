@@ -22,14 +22,9 @@ public class AppVersionService {
             URLQueryItem(name: "platform", value: platform),
             URLQueryItem(name: "version", value: version),
         ]
-        let url = Endpoints.url(Endpoints.appVersion.version)
-            .appending(queryItems: queries)
-        var request = URLRequest(url: url)
         
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let response: RemoteAppVersionResponse = try await client.send(request)
+        var request = try PuutieAPI.AppVersion.version.get(queryItems: queries)
+        let response: RemoteAppVersionResponse = try await client.send(&request)
         return response
     }
 }

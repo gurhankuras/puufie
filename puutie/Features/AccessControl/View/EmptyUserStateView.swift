@@ -11,7 +11,6 @@ import SwiftUI
 // MARK: - Empty
 struct EmptyStateView: View {
     @Binding var query: String
-    @Binding var showOnlyActive: Bool
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "person.3")
@@ -24,7 +23,6 @@ struct EmptyStateView: View {
             HStack {
                 Button("Filtreleri Temizle") {
                     query = ""
-                    showOnlyActive = false
                 }
                 .buttonStyle(.borderedProminent)
             }

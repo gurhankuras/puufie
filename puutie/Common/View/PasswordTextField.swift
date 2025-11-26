@@ -1,20 +1,14 @@
-//
-//  PasswordTextField.swift
-//  puutie
-//
-//  Created by Gurhan on 11/23/25.
-//
-
 import SwiftUI
 
-struct PasswordTextField: View {
+struct PasswordTextField<Field: Hashable>: View {
     @Binding var text: String
-    var focusedField: FocusState<LoginFields?>.Binding
-    
+    var focusedField: FocusState<Field?>.Binding
+    let passwordCase: Field                 // hangi enum case’i “password”u temsil ediyor
     let placeholder: LocalizedStringKey
-    
+    var submitLabel: SubmitLabel = .go      // opsiyonel: login vs signup farklı olabilir
+
     @State private var isVisible = false
-    
+
     var body: some View {
         HStack {
             Group {
@@ -22,22 +16,20 @@ struct PasswordTextField: View {
                     TextField(
                         "",
                         text: $text,
-                        prompt: Text(placeholder)
-                            .foregroundColor(.lightAccent2)
+                        prompt: Text(placeholder).foregroundColor(.lightAccent2)
                     )
                 } else {
                     SecureField(
                         "",
                         text: $text,
-                        prompt: Text(placeholder)
-                            .foregroundColor(.lightAccent2)
+                        prompt: Text(placeholder).foregroundColor(.lightAccent2)
                     )
                 }
             }
             .textContentType(.password)
             .textInputAutocapitalization(.never)
-            .focused(focusedField, equals: .password)
-            .submitLabel(.go)
+            .focused(focusedField, equals: passwordCase)
+            .submitLabel(submitLabel)
 
             Button {
                 isVisible.toggle()
@@ -47,9 +39,6 @@ struct PasswordTextField: View {
             }
             .buttonStyle(.plain)
         }
-        .appTextFieldStyle(
-            field: .password,
-            focusedField: focusedField
-        )
+        .appTextFieldStyle(field: passwordCase, focusedField: focusedField)
     }
 }

@@ -1,19 +1,16 @@
 import SwiftUI
 
-// MARK: - View
 struct UsersListView: View {
-    @ObservedObject var viewModel: UserListViewModel
+    @StateObject var viewModel: UserListViewModel
     @State private var isInviting = false
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
             LinearGradient.darkGradient.ignoresSafeArea()
-
             if viewModel.filtered.isEmpty {
                 EmptyStateView(
                     query: $viewModel.query,
-                    showOnlyActive: $viewModel.showOnlyActive
                 )
                 .padding()
             } else {
@@ -49,11 +46,15 @@ struct UsersListView: View {
                 .accessibilityLabel("Invite user")
             }
         }
+        .errorDialog(state: $viewModel.usersStatus)
         .sheet(isPresented: $isInviting) {
             InviteUserSheet { email in
                 viewModel.addInvited(email: email)
             }
             .presentationDetents([.height(260)])
+        }
+        .task {
+            await viewModel.getUsers()
         }
 
     }
@@ -69,25 +70,17 @@ struct UsersListView: View {
                         edge: .trailing,
                         allowsFullSwipe: true
                     ) {
-                        Button(role: .destructive) {
-                            viewModel.disable(user)
-                        } label: {
-                            Label(
-                                user.isActive
-                                    ? "Disable" : "Enable",
-                                systemImage: user.isActive
-                                    ? "slash.circle"
-                                    : "checkmark.circle"
-                            )
-                        }
+
                         Button {
                             viewModel.resetPassword(user)
                         } label: {
-                            Label(
-                                "Reset Pwd",
-                                systemImage: "key.fill"
-                            )
+                            VStack(spacing: 0) {
+                                Image(systemName: "person.crop.circle.fill")
+                                Text("Profil Ata")
+                            }
+
                         }
+                        .tint(.purple)
                     }
                     .contextMenu {
                         Button {
@@ -112,7 +105,7 @@ struct UsersListView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .animation(.easeInOut, value: viewModel.filtered)
+        .animation(.easeInOut, value: viewModel.usersList)
         .refreshable {
             await viewModel.refresh()
         }
@@ -150,16 +143,9 @@ struct UsersListView: View {
                     )
                 )
                 HStack {
-                    Toggle(isOn: $viewModel.showOnlyActive) {
-                        Label(
-                            "Sadece aktifler",
-                            systemImage: "checkmark.circle"
-                        )
-                    }
-                    .toggleStyle(.switch)
                     Spacer()
                     Text(
-                        "\(viewModel.filtered.count) / \(viewModel.users.count)"
+                        "\(viewModel.filtered.count) / \(viewModel.usersCount)"
                     )
                     .font(.caption).foregroundStyle(.secondary)
                 }
@@ -177,6 +163,6 @@ struct UsersListView: View {
 
 // MARK: - Preview
 #Preview {
-    UsersListView(viewModel: UserListViewModel())
+    UsersListView(viewModel: AppContainer.shared.buildUserListViewModel())
         .preferredColorScheme(.dark)
 }

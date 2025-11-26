@@ -8,12 +8,11 @@
 import Foundation
 
 struct UserItem: Identifiable, Hashable {
-    let id: UUID
+    let id: Int
     var email: String
     var firstName: String
     var lastName: String
     var username: String
-    var isActive: Bool
     var avatarURL: URL? = nil
 
     var fullName: String { "\(firstName) \(lastName)".trimmingCharacters(in: .whitespaces) }

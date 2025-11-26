@@ -39,11 +39,21 @@ struct LoginView: View, KeyboardReadable {
                         // Card
                         VStack(alignment: .leading, spacing: 20) {
                             headerSection
-                            AvatarView()
+                            HStack {
+                                Spacer(minLength: 0)
+                                AvatarView(
+                                    initials: nil,
+                                    url: nil,
+                                    size: .init(width: 80, height: 80)
+                                )
+                                Spacer(minLength: 0)
+                            }
+
                             usernameTextField
                             PasswordTextField(
                                 text: $viewModel.password,
                                 focusedField: $focusedField,
+                                passwordCase: .password,
                                 placeholder: "login.password.placeholder"
                             )
                             forgotPasswordLinkButton
@@ -66,7 +76,6 @@ struct LoginView: View, KeyboardReadable {
             }
             .loadingOverlay(state: viewModel.state)
 
-            
         }
         .sheet(
             isPresented: $isForgotSheetOpen,

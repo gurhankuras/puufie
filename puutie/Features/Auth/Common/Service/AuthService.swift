@@ -21,39 +21,23 @@ public class AuthService {
             username: username,
             password: password
         )
-        let url = Endpoints.url(Endpoints.auth.login)
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        let requestBody = try JSONEncoder().encode(credentials)
-        request.httpBody = requestBody
-        let res: LoginResponse = try await client.send(request)
+        var request = try PuutieAPI.Auth.login.post(body: .json(credentials))
+        let res: LoginResponse = try await client.send(&request)
         accessTokenProvider.setToken(res.accessToken)
         return res
     }
     
-    func signUp(username: String, password: String) async throws -> SignupResponse {
-        let credentials = SignupRequest(
-            username: username,
-            password: password
-        )
-        let url = Endpoints.url(Endpoints.auth.register)
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        let requestBody = try JSONEncoder().encode(credentials)
-        request.httpBody = requestBody
-        let res: SignupResponse = try await client.send(request)
+    func signUp(with signUpRequest: SignupRequest) async throws -> SignupResponse {
+        var request = try PuutieAPI.Auth.register.post(body: .json(signUpRequest))
+        let res: SignupResponse = try await client.send(&request)
         accessTokenProvider.setToken(res.accessToken)
         return res
     }
     
     
     func getLatestPasswordPolicy() async throws -> PasswordPolicy{
-        let url = Endpoints.url(Endpoints.auth.latestPasswordPolicy)
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = "GET"
-
-        let response = try await client.send(request) as PasswordPolicy
+        var request = try PuutieAPI.Auth.latestPasswordPolicy.get()
+        let response = try await client.send(&request) as PasswordPolicy
         return response
     }
     
