@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SplashView: View {
     @EnvironmentObject var router: NavigationRouter
-    @EnvironmentObject var session: AppManager
+    @EnvironmentObject var session: AppFlowCoordinator
 
     private var isVersionDialogPresented: Binding<Bool> {
         Binding(
@@ -41,9 +41,9 @@ struct SplashView: View {
         }
 
         .task {
-            await session.getVersion()
+            await session.fetchVersionInfo()
             if !session.versionDialogState.isPresented {
-                session.evaluateAuth()
+                session.checkAuthAndRoute()
             }
         }
     }
@@ -75,7 +75,10 @@ struct SplashView: View {
             ) {
                 Button("version_check.retry") {
                     Task {
-                        await session.getVersion()
+                        await session.fetchVersionInfo()
+                        if !session.versionDialogState.isPresented {
+                            session.checkAuthAndRoute()
+                        }
                     }
                 }
                 .tint(.accent2)

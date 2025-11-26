@@ -9,6 +9,7 @@ import SwiftUI
 struct SignupView: View {
     @StateObject private var viewModel: SignupViewModel = AppContainer.shared
         .buildSignupViewModel()
+    @EnvironmentObject var appManager: AppFlowCoordinator
 
     @EnvironmentObject var router: NavigationRouter
 
@@ -16,11 +17,7 @@ struct SignupView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [.darkAccent2, .black],
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            LinearGradient.appBackground
             .ignoresSafeArea()
 
             ScrollViewReader { proxy in
@@ -67,6 +64,12 @@ struct SignupView: View {
         }
         .errorDialog(state: $viewModel.state)
         .navigationBarBackButtonHidden(true)
+        .onChange(of: viewModel.state) { newValue in
+            if case .success(_) = newValue {
+                appManager.checkAuthAndRoute()
+                router.pop()
+            }
+        }
         .task {
             await viewModel.getLatestPasswordPolicy()
         }
@@ -109,11 +112,12 @@ struct SignupView: View {
     private var signUpButton: some View {
         Button("sign_up.button.label") {
             Task {
-                try? await viewModel.signUp()
+                await viewModel.signUp()
             }
         }
-        .buttonStyle(LongButtonStyle())
         .padding(.top, 8)
+        .longButtonStyle(isDisabled: !viewModel.canProceeedToSignUp)
+
     }
 }
 

@@ -15,7 +15,12 @@ struct PasswordResetView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            Color.darkAccent2.ignoresSafeArea()
+            LinearGradient(
+                colors: [.darkAccent2, .black.opacity(0.8)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
             VStack(spacing: 0) {
                 PasswordResetHeader(onClose: onTapButton)
                 ScrollView {

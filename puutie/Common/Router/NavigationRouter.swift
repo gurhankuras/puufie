@@ -10,22 +10,27 @@ import SwiftUI
 import Combine
 
 class NavigationRouter: ObservableObject {
-    @Published var path: [Route] = []
+    
+    init(paths: [Route]) {
+        self.paths = paths
+    }
+    
+    @Published var paths: [Route]
 
     func push(_ route: Route) {
-        path.append(route)
+        paths.append(route)
     }
 
     func setPath(_ routes: [Route]) {
-        path = routes
+        paths = routes
     }
 
     func pop() {
-        _ = path.popLast()
+        _ = paths.popLast()
     }
 
     func popToRoot() {
-        path.removeAll()
+        paths.removeAll()
     }
 }
 

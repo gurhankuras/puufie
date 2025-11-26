@@ -1,3 +1,4 @@
+import Combine
 //
 //  SignupViewModel.swift
 //  puutie
@@ -5,7 +6,6 @@
 //  Created by Gurhan on 11/23/25.
 //
 import Foundation
-import Combine
 
 @MainActor
 class SignupViewModel: ObservableObject {
@@ -15,37 +15,46 @@ class SignupViewModel: ObservableObject {
     init(authService: AuthService) {
         self.authService = authService
         self.validator = PasswordValidator()
-        
-       
-        
+        bindValidation()
     }
-    
+
     @Published var username: String = ""
     @Published var password: String = ""
     @Published var policyState: AsyncState<PasswordPolicy, String> = .idle
+    @Published private(set) var latestPolicy: PasswordPolicy?
     @Published var state: AsyncState<String, String> = .idle
     @Published var passwordErrorMessages: [String] = []
-    
-    
-    
-    @MainActor
+    @Published private(set) var isPasswordValid: Bool = false
+    var canProceeedToSignUp: Bool { isPasswordValid }
+
+
+    private func bindValidation() {
+        // no bounce for instant validation
+        Publishers.CombineLatest($password.removeDuplicates(), $latestPolicy)
+            .map { [unowned self] password, policy in
+                guard let policy else { return false }
+                return self.validator.validate(password, policy: policy).isValid
+            }
+            .receive(on: RunLoop.main)
+            .assign(to: &$isPasswordValid)
+
+        // debounce for messages
+        Publishers.CombineLatest($password.removeDuplicates().dropFirst(), $latestPolicy)
+            .debounce(for: .milliseconds(750), scheduler: RunLoop.main)
+            .map { [unowned self] password, policy in
+                guard let policy else { return [] }
+                return self.validator.validate(password, policy: policy).errors
+            }
+            .receive(on: RunLoop.main)
+            .assign(to: &$passwordErrorMessages)
+    }
+
     func getLatestPasswordPolicy() async {
         policyState = .loading
-        
+
         do {
             let policy = try await authService.getLatestPasswordPolicy()
-            $password
-                .removeDuplicates()
-                .dropFirst()
-                .debounce(for: .milliseconds(750), scheduler: RunLoop.main)
-                .map { [unowned self] x in
-                    return self.validator.validate(x, policy: policy)
-                }
-                .map { result in
-                    return result.errors
-                }
-                .assign(to: &$passwordErrorMessages)
-            
+            latestPolicy = policy
             policyState = .success(policy)
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {
@@ -58,17 +67,24 @@ class SignupViewModel: ObservableObject {
         }
     }
 
-    @MainActor
-    func signUp() async throws {
+    func signUp() async {
+        guard canProceeedToSignUp else {
+            state = .error("Lütfen şifre gereksinimlerini karşılayın.")
+            return
+        }
         state = .loading
-        
+
         do {
-            let res = try await authService.signUp(username: username, password: password)
+            let res = try await authService.signUp(
+                username: username,
+                password: password
+            )
             state = .success(res.accessToken)
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {
                 state = .error(object?.message ?? "")
-                if let strings = object?.details?["errorMessages"]?.stringArray {
+                if let strings = object?.details?["errorMessages"]?.stringArray
+                {
                     passwordErrorMessages = strings
                 }
                 return

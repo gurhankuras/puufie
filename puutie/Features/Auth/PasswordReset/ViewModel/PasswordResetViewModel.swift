@@ -8,7 +8,6 @@
 import Combine
 import SwiftUI
 
-
 enum PasswordResetStep {
     case form
     case otp
@@ -18,14 +17,19 @@ enum PasswordResetStep {
 @MainActor
 class PasswordResetViewModel: ObservableObject {
     private let service: PasswordResetService
+    private let authService: AuthService
 
-    init(service: PasswordResetService) {
+    init(service: PasswordResetService, authService: AuthService) {
         self.service = service
+        self.authService = authService
     }
-    
+
     @Published var status: AsyncState<Empty, String> = .idle
     @Published var otpStatus: AsyncState<String, String> = .idle
     @Published var resetStatus: AsyncState<Empty, String> = .idle
+    @Published var policyStatus: AsyncState<PasswordPolicy, String> = .idle
+    @Published var passwordRules: [PasswordRule] = []
+    
 
     @Published var step: PasswordResetStep = .form
     @Published var token: String?
@@ -69,14 +73,16 @@ class PasswordResetViewModel: ObservableObject {
             otpStatus = .error("Unexpected error.")
         }
     }
-    
+
     func resetPassword(newPassword: String) async {
-        if token == nil {
-            return
-        }
-        status = .loading
+        guard let token = token else { return }
+        
+        resetStatus = .loading
         do {
-            try await service.resetPassword(with: token!, providing: newPassword)
+            try await service.resetPassword(
+                with: token,
+                providing: newPassword
+            )
             resetStatus = .success
         } catch let apiError as APIError {
             if case .server(_, let object) = apiError {
@@ -89,6 +95,23 @@ class PasswordResetViewModel: ObservableObject {
         }
     }
     
+    func getLatestPasswordPolicy() async {
+        policyStatus = .loading
+        do {
+            let policy = try await authService.getLatestPasswordPolicy()
+            passwordRules = PasswordRule.rules(for: policy)
+            policyStatus = .success(policy)
+        } catch let apiError as APIError {
+            if case .server(_, let object) = apiError {
+                policyStatus = .error(object?.message ?? "")
+                return
+            }
+            policyStatus = .error("Something went wrong.")
+        } catch {
+            policyStatus = .error("Unexpected error.")
+        }
+    }
+
     func handleCurrentStepAction(username: String) async {
         switch step {
         case .form:

@@ -14,7 +14,7 @@ enum LoginFields: Hashable {
 
 struct LoginView: View, KeyboardReadable {
     @EnvironmentObject var router: NavigationRouter
-    @EnvironmentObject var appManager: AppManager
+    @EnvironmentObject var appManager: AppFlowCoordinator
 
     @StateObject private var viewModel: LoginViewModel = AppContainer.shared
         .buildLoginViewModel()
@@ -83,11 +83,13 @@ struct LoginView: View, KeyboardReadable {
                 message: viewModel.state.errorMessage ?? ""
             )
         }
+        /*
         .onChange(of: viewModel.state) { newValue in
             if case .success = newValue {
                 appManager.didLogin()
             }
         }
+         */
         .onReceive(keyboardPublisher) { newIsKeyboardVisible in
             isKeyboardVisible = newIsKeyboardVisible
         }

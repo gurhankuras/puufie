@@ -36,6 +36,12 @@ sign_up.password.rules.title="Oluşturacağınız şifre aşağıdaki kuralları
 
 custom_model.title.default="Hata";
 
+password.rule.min_length = "En az %d karakter.";
+password.rule.max_length = "En fazla %d karakter.";
+password.rule.requires_uppercase = "Bir büyük harf gerekli.";
+password.rule.requires_lowercase = "Bir küçük harf gerekli.";
+password.rule.requires_number = "Bir rakam gerekli.";
+password.rule.requires_special = "Bir özel karakter gerekli.";
 
 version_check.error = "Uygulama versiyonu kontrol edilemedi. Lütfen daha sonra tekrar deneyiniz.";
 version_check.retry="Yeniden Dene";

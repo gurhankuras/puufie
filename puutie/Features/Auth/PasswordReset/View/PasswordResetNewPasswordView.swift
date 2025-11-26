@@ -13,7 +13,8 @@ struct PasswordResetNewPasswordView: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(alignment: .leading, spacing: 20) {
+            PasswordRulesView(rules: viewModel.passwordRules)
             TextField(
                 "",
                 text: $newPassword,

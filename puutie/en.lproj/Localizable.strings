@@ -35,6 +35,14 @@ sign_up.password_validation.requires_number = "Must contain at least one digit."
 sign_up.password_validation.requires_special = "Must contain at least one special character.";
 sign_up.password.rules.title="Password must meet the following rules:";
 
+password.rule.min_length = "At least %d characters.";
+password.rule.max_length = "At most %d characters.";
+password.rule.requires_uppercase = "Needs an uppercase letter.";
+password.rule.requires_lowercase = "Needs a lowercase letter.";
+password.rule.requires_number = "Needs a number.";
+password.rule.requires_special = "Needs a special character.";
+
+
 
 custom_model.title.default="Error";
 

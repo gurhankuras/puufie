@@ -6,7 +6,7 @@
 //
 
 
-enum AppEnvironment {
+enum AppEnvironment: String {
     case dev
     case staging
     case prod

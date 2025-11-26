@@ -31,5 +31,8 @@ struct PasswordResetUsernameView: View {
             .focused($isFocused)
         }
         .focusOnAppear($isFocused)
+        .task {
+            await viewModel.getLatestPasswordPolicy()
+        }
     }
 }

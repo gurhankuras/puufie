@@ -10,9 +10,10 @@ import Foundation
 public class AuthService {
     
     private let client: NetworkClientProtocol
-    
-    init(client: NetworkClientProtocol) {
+    private let accessTokenProvider: AccessTokenProvider
+    init(client: NetworkClientProtocol, accessTokenProvider: AccessTokenProvider) {
         self.client = client
+        self.accessTokenProvider = accessTokenProvider
     }
     
     func login(username: String, password: String) async throws -> LoginResponse {
@@ -26,6 +27,7 @@ public class AuthService {
         let requestBody = try JSONEncoder().encode(credentials)
         request.httpBody = requestBody
         let res: LoginResponse = try await client.send(request)
+        accessTokenProvider.setToken(res.accessToken)
         return res
     }
     
@@ -40,6 +42,7 @@ public class AuthService {
         let requestBody = try JSONEncoder().encode(credentials)
         request.httpBody = requestBody
         let res: SignupResponse = try await client.send(request)
+        accessTokenProvider.setToken(res.accessToken)
         return res
     }
     

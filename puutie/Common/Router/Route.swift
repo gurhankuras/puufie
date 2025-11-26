@@ -11,4 +11,9 @@ enum Route: Hashable {
     case camera
     case splash
     case signUp
+    case accessControl
+    case profiles
+    case users
+    case permissions
+    case roles
 }

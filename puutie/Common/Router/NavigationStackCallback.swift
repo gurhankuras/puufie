@@ -13,15 +13,24 @@ func destination(for route: Route) -> some View {
     case .login:
         LoginView()
     case .home:
-        HomeView()
+        HomeView(items: [])
     case .camera:
         CameraView()
     case .splash:
         SplashView()
     case .signUp:
         SignupView()
+    case .accessControl:
+        AccessControlView()
+    case .permissions:
+        PermissionsView()
+    case .users:
+        UsersListView(viewModel: UserListViewModel())
+    case .profiles:
+        ProfilesView()
+    case .roles:
+        RolesView()
     }
-    
 }
 
 

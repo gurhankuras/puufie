@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RootView: View {
-    @StateObject private var router = NavigationRouter()
+    @StateObject private var router = NavigationRouter(paths: [])
     @StateObject private var session = AppContainer.shared.buildAppManager()
 
     var body: some View {
@@ -16,7 +16,7 @@ struct RootView: View {
             switch session.phase {
 
             case .unauthenticated:
-                NavigationStack(path: $router.path) {
+                NavigationStack(path: $router.paths) {
                     LoginView()
                         .navigationBarBackButtonHidden(true)
                         .navigationDestination(
@@ -26,8 +26,8 @@ struct RootView: View {
                 }
 
             case .authenticated:
-                NavigationStack(path: $router.path) {
-                    HomeView()
+                NavigationStack(path: $router.paths) {
+                    HomeView(items: [])
                         .navigationBarBackButtonHidden(true)  // root: Home
                         .navigationDestination(
                             for: Route.self,

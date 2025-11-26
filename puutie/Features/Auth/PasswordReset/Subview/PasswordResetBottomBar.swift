@@ -22,10 +22,7 @@ struct PasswordResetBottomBar: View {
                     Text(title)
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(LongButtonStyle())
-                .grayscale(isDisabled ? 1 : 0)
-                .opacity(isDisabled ? 0.6 : 1)
-                .disabled(isDisabled)
+                .longButtonStyle(isDisabled: isDisabled)
             }
             .animation(.easeIn(duration: 0.2), value: isDisabled)
             .padding(.horizontal, 16)

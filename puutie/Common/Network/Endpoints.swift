@@ -11,7 +11,7 @@ enum Endpoints {
     enum auth {
         static let login = "/api/auth/login"
         static let register = "/api/auth/register"
-        static let latestPasswordPolicy = "/api/auth/password-policy/latest"
+        static let latestPasswordPolicy = "/api/auth/password-policy/requirements/latest"
     }
     enum forgotPassword {
         static let verifyOtp = "/api/auth/forgot-password/verify-otp"

@@ -42,8 +42,8 @@ struct PasswordTextField: View {
             Button {
                 isVisible.toggle()
             } label: {
-                Image(systemName: isVisible ? "eye.slash" : "eye")
-                    .foregroundColor(.lightAccent2)
+                Image(systemName: isVisible ? "eye" : "eye.slash")
+                    .foregroundColor(isVisible ? .darkAccent2.opacity(0.8) : .lightAccent2)
             }
             .buttonStyle(.plain)
         }

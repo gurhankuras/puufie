@@ -14,6 +14,14 @@ protocol NetworkClientProtocol {
 }
 
 final class NetworkClient: NetworkClientProtocol {
+    private let urlSession: URLSession
+    private let requestAuthorizer: RequestAuthorizing
+    
+    init(urlSession: URLSession = .shared, requestAuthorizer: RequestAuthorizing) {
+        self.urlSession = urlSession
+        self.requestAuthorizer = requestAuthorizer
+    }
+    
     func send<T: Decodable>(_ request: URLRequest) async throws -> T {
         var req = request
         
@@ -23,6 +31,8 @@ final class NetworkClient: NetworkClientProtocol {
             forHTTPHeaderField: "Accept-Language"
         )
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        requestAuthorizer.authorize(&req)
 
         do {
             let (data, response) = try await URLSession.shared.data(
