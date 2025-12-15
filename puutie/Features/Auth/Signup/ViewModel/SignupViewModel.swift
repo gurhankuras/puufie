@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 @MainActor
-class SignupViewModel: ObservableObject {
+class SignupViewModel: ObservableObject, BaseViewModel {
     private let authService: AuthService
     private let validator: PasswordValidator
 
@@ -96,14 +96,8 @@ class SignupViewModel: ObservableObject {
             let policy = try await authService.getLatestPasswordPolicy()
             latestPolicy = policy
             policyState = .success(policy)
-        } catch let apiError as APIError {
-            if case .server(_, let object) = apiError {
-                policyState = .error(object?.message ?? "")
-                return
-            }
-            policyState = .error("Something went wrong.")
         } catch {
-            policyState = .error("Unexpected error.")
+            handleError(error, state: &policyState)
         }
     }
     
@@ -132,17 +126,15 @@ class SignupViewModel: ObservableObject {
             let res = try await authService.signUp(with: request)
             state = .success(res.accessToken)
         } catch let apiError as APIError {
+            // Handle password error messages before using handleError
             if case .server(_, let object) = apiError {
-                state = .error(object?.message ?? "")
-                if let strings = object?.details?["errorMessages"]?.stringArray
-                {
+                if let strings = object?.details?["errorMessages"]?.stringArray {
                     passwordErrorMessages = strings
                 }
-                return
             }
-            state = .error("Something went wrong.")
+            handleError(apiError, state: &state)
         } catch {
-            state = .error("Unexpected error.")
+            handleError(error, state: &state)
         }
     }
 }

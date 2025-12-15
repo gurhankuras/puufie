@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public class AuthService {
     
@@ -17,9 +18,10 @@ public class AuthService {
     }
     
     func login(username: String, password: String) async throws -> LoginResponse {
-        let credentials = LoginCredentials(
+        let credentials = LoginRequest(
             username: username,
-            password: password
+            password: password,
+            deviceName: UIDevice.current.name
         )
         var request = try PuutieAPI.Auth.login.post(body: .json(credentials))
         let res: LoginResponse = try await client.send(&request)

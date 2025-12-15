@@ -30,6 +30,8 @@ func destination(for route: Route) -> some View {
         ProfilesView()
     case .roles:
         RolesView()
+    case .userNotificationList:
+        UserNotificationsView()
     }
 }
 

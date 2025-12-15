@@ -37,11 +37,21 @@ public enum PuutieAPI {
     public enum AppVersionNS: Namespace {
         public static let base = ["api", "app-version"]
     }
+    
+    public enum PushNotificationTokenNS: Namespace {
+        public static let base = ["api", "push-token"]
+    }
 
+    public enum PushNotificationNS: Namespace {
+        public static let base = ["api", "push-notification"]
+    }
+    
     public typealias Auth = Endpoint<AuthNS>
     public typealias User = Endpoint<UserNS>
     public typealias ForgotPassword = Endpoint<ForgotPasswordNS>
     public typealias AppVersion = Endpoint<AppVersionNS>
+    public typealias PushNotificationToken = Endpoint<PushNotificationTokenNS>
+    public typealias PushNotification = Endpoint<PushNotificationNS>
 
     public enum HTTPMethod: String { case GET, POST, PUT, PATCH, DELETE, HEAD }
 

@@ -10,7 +10,7 @@ final class AppConfig {
 
     private init() {}
 
-    var environment: AppEnvironment = .staging
+    var environment: AppEnvironment = .dev
 
     var baseURL: String {
         switch environment {

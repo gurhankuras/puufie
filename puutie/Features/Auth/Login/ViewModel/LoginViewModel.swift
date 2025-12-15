@@ -9,7 +9,7 @@ import Combine
 import SwiftUI
 
 
-class LoginViewModel: ObservableObject {
+class LoginViewModel: ObservableObject, BaseViewModel {
     private let authService: AuthService
 
     init(authService: AuthService) {
@@ -37,14 +37,8 @@ class LoginViewModel: ObservableObject {
         do {
             let res = try await authService.login(username: username, password: password)
             state = .success(res.accessToken)
-        } catch let apiError as APIError {
-            if case .server(_, let object) = apiError {
-                state = .error(object?.message ?? "")
-                return
-            }
-            state = .error("Something went wrong.")
         } catch {
-            state = .error("Unexpected error.")
+            handleError(error, state: &state)
         }
     }
 

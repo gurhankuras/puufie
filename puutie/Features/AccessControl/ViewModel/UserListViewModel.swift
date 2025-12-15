@@ -3,7 +3,7 @@ import Combine
 import UIKit
 
 @MainActor
-final class UserListViewModel: ObservableObject {
+final class UserListViewModel: ObservableObject, BaseViewModel {
     @Published var query = ""
     @Published var sort: UserSort = .nameAsc
     @Published var usersStatus: AsyncState<[UserItem], String> = .idle
@@ -73,14 +73,8 @@ final class UserListViewModel: ObservableObject {
             }
             usersList = items                  // 🔗 UI kaynağını güncelle
             usersStatus = .success(items)      // durum ekranları için koru
-        } catch let apiError as APIError {
-            if case .server(_, let object) = apiError {
-                usersStatus = .error(object?.message ?? "")
-                return
-            }
-            usersStatus = .error("Something went wrong.")
         } catch {
-            usersStatus = .error("Unexpected error.")
+            handleError(error, state: &usersStatus)
         }
     }
 

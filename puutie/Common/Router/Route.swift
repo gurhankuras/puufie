@@ -5,7 +5,7 @@
 //  Created by Gurhan on 11/18/25.
 //
 
-enum Route: Hashable {
+enum Route: String, Hashable {
     case login
     case home
     case camera
@@ -16,4 +16,5 @@ enum Route: Hashable {
     case users
     case permissions
     case roles
+    case userNotificationList
 }

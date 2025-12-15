@@ -37,3 +37,8 @@ import Foundation
 public extension PuutieAPI.Endpoint where NS == PuutieAPI.AppVersionNS {
     static let version = Self()
 }
+
+
+public extension PuutieAPI.Endpoint where NS == PuutieAPI.PushNotificationTokenNS {
+    static let register = Self(["register"])
+}

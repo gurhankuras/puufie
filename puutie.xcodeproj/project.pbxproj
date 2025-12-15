@@ -7,10 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		591B3E462ED98CEB007B9E8B /* Payload Modification.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 591B3E3F2ED98CEB007B9E8B /* Payload Modification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		596CAA2C2ECFA5B400AB8FAD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 596CAA2B2ECFA5B400AB8FAD /* README.md */; };
+		59FFB3EF2ED79ECC004A62BB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 59FFB3EE2ED79ECC004A62BB /* FirebaseAnalytics */; };
+		59FFB3F12ED79ECC004A62BB /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 59FFB3F02ED79ECC004A62BB /* FirebaseAnalyticsCore */; };
+		59FFB3F32ED79ECC004A62BB /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 59FFB3F22ED79ECC004A62BB /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		591B3E442ED98CEB007B9E8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 593500D92ECCB5BC0035894C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 591B3E3E2ED98CEB007B9E8B;
+			remoteInfo = "Payload Modification";
+		};
 		593500F82ECCB5BD0035894C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 593500D92ECCB5BC0035894C /* Project object */;
@@ -27,7 +38,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		591B3E4B2ED98CEB007B9E8B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				591B3E462ED98CEB007B9E8B /* Payload Modification.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		591B3E3F2ED98CEB007B9E8B /* Payload Modification.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Payload Modification.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		593500E12ECCB5BC0035894C /* puutie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = puutie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		593500F72ECCB5BD0035894C /* puutieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = puutieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		593501012ECCB5BD0035894C /* puutieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = puutieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,6 +62,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		591B3E4A2ED98CEB007B9E8B /* Exceptions for "Payload Modification" folder in "Payload Modification" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 591B3E3E2ED98CEB007B9E8B /* Payload Modification */;
+		};
 		593501092ECCB5BD0035894C /* Exceptions for "puutie" folder in "puutie" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -43,13 +76,37 @@
 			);
 			target = 593500E02ECCB5BC0035894C /* puutie */;
 		};
+		59FFB3EB2ED79A3C004A62BB /* Exceptions for "puutie" folder in "puutieTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 593500F62ECCB5BD0035894C /* puutieTests */;
+		};
+		59FFB3EC2ED79A3C004A62BB /* Exceptions for "puutie" folder in "puutieUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 593501002ECCB5BD0035894C /* puutieUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		591B3E402ED98CEB007B9E8B /* Payload Modification */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				591B3E4A2ED98CEB007B9E8B /* Exceptions for "Payload Modification" folder in "Payload Modification" target */,
+			);
+			path = "Payload Modification";
+			sourceTree = "<group>";
+		};
 		593500E32ECCB5BC0035894C /* puutie */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				593501092ECCB5BD0035894C /* Exceptions for "puutie" folder in "puutie" target */,
+				59FFB3EB2ED79A3C004A62BB /* Exceptions for "puutie" folder in "puutieTests" target */,
+				59FFB3EC2ED79A3C004A62BB /* Exceptions for "puutie" folder in "puutieUITests" target */,
 			);
 			path = puutie;
 			sourceTree = "<group>";
@@ -67,10 +124,20 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		591B3E3C2ED98CEB007B9E8B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		593500DE2ECCB5BC0035894C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59FFB3F32ED79ECC004A62BB /* FirebaseMessaging in Frameworks */,
+				59FFB3EF2ED79ECC004A62BB /* FirebaseAnalytics in Frameworks */,
+				59FFB3F12ED79ECC004A62BB /* FirebaseAnalyticsCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +165,7 @@
 				593500E32ECCB5BC0035894C /* puutie */,
 				593500FA2ECCB5BD0035894C /* puutieTests */,
 				593501042ECCB5BD0035894C /* puutieUITests */,
+				591B3E402ED98CEB007B9E8B /* Payload Modification */,
 				593500E22ECCB5BC0035894C /* Products */,
 				5935013F2ECDBCE50035894C /* puutie-Bridging-Header.h */,
 			);
@@ -109,6 +177,7 @@
 				593500E12ECCB5BC0035894C /* puutie.app */,
 				593500F72ECCB5BD0035894C /* puutieTests.xctest */,
 				593501012ECCB5BD0035894C /* puutieUITests.xctest */,
+				591B3E3F2ED98CEB007B9E8B /* Payload Modification.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,6 +185,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		591B3E3E2ED98CEB007B9E8B /* Payload Modification */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 591B3E472ED98CEB007B9E8B /* Build configuration list for PBXNativeTarget "Payload Modification" */;
+			buildPhases = (
+				591B3E3B2ED98CEB007B9E8B /* Sources */,
+				591B3E3C2ED98CEB007B9E8B /* Frameworks */,
+				591B3E3D2ED98CEB007B9E8B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				591B3E402ED98CEB007B9E8B /* Payload Modification */,
+			);
+			name = "Payload Modification";
+			packageProductDependencies = (
+			);
+			productName = "Payload Modification";
+			productReference = 591B3E3F2ED98CEB007B9E8B /* Payload Modification.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		593500E02ECCB5BC0035894C /* puutie */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5935010A2ECCB5BD0035894C /* Build configuration list for PBXNativeTarget "puutie" */;
@@ -123,16 +214,21 @@
 				593500DD2ECCB5BC0035894C /* Sources */,
 				593500DE2ECCB5BC0035894C /* Frameworks */,
 				593500DF2ECCB5BC0035894C /* Resources */,
+				591B3E4B2ED98CEB007B9E8B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				591B3E452ED98CEB007B9E8B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				593500E32ECCB5BC0035894C /* puutie */,
 			);
 			name = puutie;
 			packageProductDependencies = (
+				59FFB3EE2ED79ECC004A62BB /* FirebaseAnalytics */,
+				59FFB3F02ED79ECC004A62BB /* FirebaseAnalyticsCore */,
+				59FFB3F22ED79ECC004A62BB /* FirebaseMessaging */,
 			);
 			productName = puutie;
 			productReference = 593500E12ECCB5BC0035894C /* puutie.app */;
@@ -194,6 +290,9 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					591B3E3E2ED98CEB007B9E8B = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 					593500E02ECCB5BC0035894C = {
 						CreatedOnToolsVersion = 26.0.1;
 						LastSwiftMigration = 2600;
@@ -218,6 +317,9 @@
 			);
 			mainGroup = 593500D82ECCB5BC0035894C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				59FFB3ED2ED79ECC004A62BB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 593500E22ECCB5BC0035894C /* Products */;
 			projectDirPath = "";
@@ -226,11 +328,19 @@
 				593500E02ECCB5BC0035894C /* puutie */,
 				593500F62ECCB5BD0035894C /* puutieTests */,
 				593501002ECCB5BD0035894C /* puutieUITests */,
+				591B3E3E2ED98CEB007B9E8B /* Payload Modification */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		591B3E3D2ED98CEB007B9E8B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		593500DF2ECCB5BC0035894C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +366,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		591B3E3B2ED98CEB007B9E8B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		593500DD2ECCB5BC0035894C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -280,6 +397,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		591B3E452ED98CEB007B9E8B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 591B3E3E2ED98CEB007B9E8B /* Payload Modification */;
+			targetProxy = 591B3E442ED98CEB007B9E8B /* PBXContainerItemProxy */;
+		};
 		593500F92ECCB5BD0035894C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 593500E02ECCB5BC0035894C /* puutie */;
@@ -293,17 +415,78 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		591B3E482ED98CEB007B9E8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PG5DH5Q24R;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Payload Modification/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Payload Modification";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kuras.puutie.Payload-Modification";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		591B3E492ED98CEB007B9E8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PG5DH5Q24R;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Payload Modification/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Payload Modification";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kuras.puutie.Payload-Modification";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		5935010B2ECCB5BD0035894C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = puutie/puutie.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PG5DH5Q24R;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = puutie/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Puutie;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "kamera acmak istiyorum";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -335,11 +518,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = puutie/puutie.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PG5DH5Q24R;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = puutie/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Puutie;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "kamera acmak istiyorum";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -566,6 +752,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		591B3E472ED98CEB007B9E8B /* Build configuration list for PBXNativeTarget "Payload Modification" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				591B3E482ED98CEB007B9E8B /* Debug */,
+				591B3E492ED98CEB007B9E8B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		593500DC2ECCB5BC0035894C /* Build configuration list for PBXProject "puutie" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -603,6 +798,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		59FFB3ED2ED79ECC004A62BB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		59FFB3EE2ED79ECC004A62BB /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 59FFB3ED2ED79ECC004A62BB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		59FFB3F02ED79ECC004A62BB /* FirebaseAnalyticsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 59FFB3ED2ED79ECC004A62BB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsCore;
+		};
+		59FFB3F22ED79ECC004A62BB /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 59FFB3ED2ED79ECC004A62BB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 593500D92ECCB5BC0035894C /* Project object */;
 }

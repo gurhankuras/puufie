@@ -86,3 +86,5 @@ fastlane/test_output
 iOSInjectionProject/
 
 # End of https://www.toptal.com/developers/gitignore/api/swift
+puutie/GoogleService-Info.plist
+puutie/GoogleService-Info.plist

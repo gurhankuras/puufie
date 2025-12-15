@@ -19,6 +19,8 @@ final class AppContainer {
     let accessTokenProvider: AccessTokenProvider
     let requestAuthorizer: RequestAuthorizing
     let userService: UserService
+    let pushNotificationTokenService: PushNotificationTokenService
+    let userNotificationservice: UserNotificationService
 
     private init() {
         // 1) Ortak bağımlılıkları önce oluştur
@@ -33,7 +35,13 @@ final class AppContainer {
         )
         let client = NetworkClient(
             urlSession: URLSession.shared,
-            requestAuthorizer: requestAuthorizer
+            requestAuthorizer: requestAuthorizer,
+            onUnauthorized: { [weak accessTokenProvider] in
+                // 401 hatası yakalandığında token'ı temizle
+                // Bu, AppFlowCoordinator'ın notification'ı dinlemesiyle
+                // otomatik olarak login ekranına yönlendirecek
+                accessTokenProvider?.clear()
+            }
         )
 
         self.networkClient = client
@@ -46,6 +54,8 @@ final class AppContainer {
         )
         
         self.userService = UserService(client: networkClient)
+        self.pushNotificationTokenService = PushNotificationTokenService(client: networkClient)
+        self.userNotificationservice = UserNotificationService(client: networkClient)
     }
 
     func buildLoginViewModel() -> LoginViewModel {
@@ -62,7 +72,8 @@ final class AppContainer {
     func buildAppManager() -> AppFlowCoordinator {
         return AppFlowCoordinator(
             appVersionService: appVersionService,
-            accessTokenProvider: accessTokenProvider
+            accessTokenProvider: accessTokenProvider,
+            pushNotificationTokenService: pushNotificationTokenService
         )
     }
 
@@ -72,5 +83,9 @@ final class AppContainer {
     
     func buildUserListViewModel() -> UserListViewModel {
         return UserListViewModel(userService: userService)
+    }
+    
+    func buildUserNotificationViewModel() -> UserNotificationsViewModel {
+        return UserNotificationsViewModel(userNotificationProvider: MockUserNotificationService(simulatedDelay: 0.5))
     }
 }

@@ -3,7 +3,7 @@ import SwiftUI
 struct UsersListView: View {
     @StateObject var viewModel: UserListViewModel
     @State private var isInviting = false
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var router: NavigationRouter
 
     var body: some View {
         ZStack {
@@ -22,7 +22,7 @@ struct UsersListView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    dismiss()
+                    router.pop()
                 } label: {
                     Image(systemName: "chevron.left")
                 }

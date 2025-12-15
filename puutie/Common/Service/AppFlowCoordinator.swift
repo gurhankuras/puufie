@@ -6,6 +6,7 @@
 //
 
 import Combine
+import FirebaseMessaging
 import Foundation
 
 enum VersionDialogState: Equatable {
@@ -28,21 +29,24 @@ final class AppFlowCoordinator: ObservableObject {
     private let appVersionService: AppVersionService
     private let accessTokenProvider: AccessTokenProvider
     private let notificationCenter: NotificationCenter
+    private let pushNotificationTokenService: PushNotificationTokenService
 
-    private var tokenObserver: NSObjectProtocol? 
+    private var tokenObserver: NSObjectProtocol?
 
     init(
         appVersionService: AppVersionService,
         accessTokenProvider: AccessTokenProvider,
+        pushNotificationTokenService: PushNotificationTokenService,
         notificationCenter: NotificationCenter = .default
 
     ) {
         self.appVersionService = appVersionService
         self.accessTokenProvider = accessTokenProvider
+        self.pushNotificationTokenService = pushNotificationTokenService
         self.notificationCenter = notificationCenter
         startObservingAuth()
     }
-    
+
     deinit {
         if let tokenObserver {
             notificationCenter.removeObserver(tokenObserver)
@@ -64,13 +68,17 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     private func handleTokenChange(_ token: String?) {
-        if let token, !token.isEmpty {
+        if JWTTokenValidator.isTokenValid(token) {
             phase = .authenticated
+            if let currentFcmToken = Messaging.messaging().fcmToken {
+                pushNotificationTokenService.register(
+                    with: currentFcmToken
+                ) { _ in }
+            }
         } else {
             phase = .unauthenticated
         }
     }
-
 
     func fetchVersionInfo() async {
         do {
@@ -86,9 +94,24 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     func checkAuthAndRoute() {
-        if let token = accessTokenProvider.currentToken, !token.isEmpty {
+        let token = accessTokenProvider.currentToken
+        
+        guard let token = token, !token.isEmpty else {
+            phase = .unauthenticated
+            return
+        }
+        
+        // Token'ı validate et
+        let validationResult = JWTTokenValidator.validateToken(token)
+        
+        switch validationResult {
+        case .valid:
+            // Token geçerli, authenticated olarak devam et
             phase = .authenticated
-        } else {
+            
+        case .invalid, .expired:
+            // Token formatı geçersiz veya expire olmuş, temizle ve login ekranına yönlendir
+            accessTokenProvider.clear()
             phase = .unauthenticated
         }
     }

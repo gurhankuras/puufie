@@ -72,6 +72,15 @@ struct HomeView: View {
 
     var header: some View {
         HStack {
+            Button {
+                router.push(.userNotificationList)
+            } label: {
+                Image(systemName: "bell.fill")
+                    .font(.title2.weight(.semibold))
+                    .foregroundStyle(.lightShade2)
+                    .padding()
+                    .contentShape(Rectangle())
+            }
             Spacer()
             Button {
                 isDrawerOpen.toggle()
@@ -83,10 +92,11 @@ struct HomeView: View {
                     .contentShape(Rectangle())
             }
         }
-        .padding()
         .overlay {
             Text("Home").font(.title2).foregroundStyle(.white)
         }
+        .padding(.horizontal)
+       
     }
 
     var content: some View {

@@ -15,7 +15,7 @@ enum PasswordResetStep {
 }
 
 @MainActor
-class PasswordResetViewModel: ObservableObject {
+class PasswordResetViewModel: ObservableObject, BaseViewModel {
     private let service: PasswordResetService
     private let authService: AuthService
 
@@ -41,14 +41,8 @@ class PasswordResetViewModel: ObservableObject {
         do {
             try await service.requestForgotPassword(for: username)
             status = .success
-        } catch let apiError as APIError {
-            if case .server(_, let object) = apiError {
-                status = .error(object?.message ?? "")
-                return
-            }
-            status = .error("Something went wrong.")
         } catch {
-            status = .error("Unexpected error.")
+            handleError(error, state: &status)
         }
     }
 
@@ -63,14 +57,8 @@ class PasswordResetViewModel: ObservableObject {
             let response = try await service.verifyOtp(with: request)
             otpStatus = .success(response.token)
             token = response.token
-        } catch let apiError as APIError {
-            if case .server(_, let object) = apiError {
-                otpStatus = .error(object?.message ?? "")
-                return
-            }
-            otpStatus = .error("Something went wrong.")
         } catch {
-            otpStatus = .error("Unexpected error.")
+            handleError(error, state: &otpStatus)
         }
     }
 
@@ -84,14 +72,8 @@ class PasswordResetViewModel: ObservableObject {
                 providing: newPassword
             )
             resetStatus = .success
-        } catch let apiError as APIError {
-            if case .server(_, let object) = apiError {
-                resetStatus = .error(object?.message ?? "")
-                return
-            }
-            resetStatus = .error("Something went wrong.")
         } catch {
-            resetStatus = .error("Unexpected error.")
+            handleError(error, state: &resetStatus)
         }
     }
     
@@ -101,14 +83,8 @@ class PasswordResetViewModel: ObservableObject {
             let policy = try await authService.getLatestPasswordPolicy()
             passwordRules = PasswordRule.rules(for: policy)
             policyStatus = .success(policy)
-        } catch let apiError as APIError {
-            if case .server(_, let object) = apiError {
-                policyStatus = .error(object?.message ?? "")
-                return
-            }
-            policyStatus = .error("Something went wrong.")
         } catch {
-            policyStatus = .error("Unexpected error.")
+            handleError(error, state: &policyStatus)
         }
     }
 

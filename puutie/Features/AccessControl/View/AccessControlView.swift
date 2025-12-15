@@ -32,8 +32,6 @@ struct AccessControlView: View {
 
     @EnvironmentObject var router: NavigationRouter
 
-    @Environment(\.dismiss) private var dismiss
-
     private var terms: [AccessControlTerm] {
         [
             .init(
@@ -253,7 +251,7 @@ struct AccessControlView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button(action: { dismiss() }) {
+                Button(action: { router.pop() }) {
                     Image(systemName: "chevron.left")
                 }
             }
